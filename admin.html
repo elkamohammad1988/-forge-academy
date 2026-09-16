@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0F12">
+
+<title>Admin — Forge Martial Arts Manchester</title>
+<meta name="robots" content="noindex,nofollow">
+
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" referrerpolicy="no-referrer">
+<!-- forge-theme-bootstrap -->
+<script>(function(){try{var k='forge:theme';var s=localStorage.getItem(k);var t=s||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='dark'?'#0E0F12':'#F7F4EE');}catch(e){}})();</script>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230E0F12'/><text x='50%25' y='58%25' font-family='Anton,sans-serif' font-size='20' fill='%23C9A24B' text-anchor='middle'>F</text></svg>">
+<style>
+  .admin-shell { background: var(--c-bone); min-height: 100vh; }
+  .stat-card { background:#fff; border:1px solid var(--c-line); border-radius: var(--radius); padding: 1.2rem; }
+  .stat-card .v { font-family: var(--f-display); font-size: 2rem; color: var(--c-blood); line-height: 1; }
+  .stat-card .l { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--c-mute); margin-top:.4rem; }
+  /* Table chrome lives in css/styles.css under .app-view — kept in one
+     place so admin and the member portal stay consistent. */
+  .pill { display:inline-block; padding:.15rem .55rem; border-radius:999px; font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+  .pill-new { background: rgba(200,16,46,.12); color: var(--c-blood); }
+  .pill-contacted { background: rgba(201,162,75,.18); color: #6e5417; }
+  .pill-booked { background: rgba(46,160,67,.15); color:#1f7a31; }
+  .pill-closed { background: rgba(108,112,122,.15); color: var(--c-charcoal); }
+  .pill-spam { background: #2A2D34; color:#fff; }
+  .live-feed { position: fixed; right: 1rem; bottom: 1rem; z-index: 200; max-width: 340px; }
+  .live-feed-card {
+    background: var(--c-ink); color: var(--c-bone); border-left: 3px solid var(--c-blood);
+    border-radius: 10px; padding: .9rem 1rem; box-shadow: 0 16px 40px rgba(0,0,0,.3);
+    margin-top: .6rem; animation: liveIn .35s cubic-bezier(.2,.7,.2,1) both;
+    font-size:.88rem;
+  }
+  @keyframes liveIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  .live-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#2EA043; animation: pulseDot 1.8s ease-out infinite; margin-right:.4rem; vertical-align: middle; }
+  .live-dot.off { background: var(--c-mute); animation: none; }
+  .chart-wrap { background:#fff; border:1px solid var(--c-line); border-radius: var(--radius); padding: 1.2rem; }
+</style>
+</head>
+
+<body class="admin-shell" data-page="admin">
+
+<header class="site-header">
+  <div class="container">
+    <div class="nav-row">
+      <a href="index.html" class="brand"><span class="brand-mark">F</span><span>Forge<span class="brand-sub">Admin</span></span></a>
+      <div class="d-flex gap-2 align-items-center">
+        <span id="liveStatus" class="text-secondary" style="font-size:.78rem;"><span class="live-dot off"></span>offline</span>
+        <span id="adminEmail" class="text-secondary" style="font-size:.85rem;"></span>
+        <button class="btn-forge btn-dark-forge nav-cta" id="logoutBtn" style="display:none;">Sign out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- LOGIN -->
+<section class="section section-bone app-view" id="loginSection">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="lead-wrap light">
+          <span class="eyebrow">Admin</span>
+          <h2>Sign in</h2>
+          <p class="text-secondary">Configure via <code>ADMIN_EMAIL</code> + <code>ADMIN_PASSWORD_HASH</code> in <code>.env</code>, or any member with <code>role='admin'</code>.</p>
+          <form id="adminLogin" novalidate>
+            <div class="field-wrap mb-3">
+              <label class="form-label-forge" for="adminLoginEmail">Email</label>
+              <input class="form-control-forge" id="adminLoginEmail" name="email" type="email" required autocomplete="email">
+            </div>
+            <div class="field-wrap mb-3">
+              <label class="form-label-forge" for="adminLoginPassword">Password</label>
+              <input class="form-control-forge" id="adminLoginPassword" name="password" type="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-forge btn-primary-forge w-100">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="section section-bone app-view" id="dashSection" style="display:none;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+      <div>
+        <span class="eyebrow">Dashboard</span>
+        <h1 style="margin-bottom:0;">Forge Admin</h1>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn-forge btn-dark-forge" href="/api/admin/leads.csv">Export CSV</a>
+        <button class="btn-forge btn-primary-forge" id="refreshBtn">Refresh</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3"><div class="stat-card"><div class="v" data-stat="leads_new">—</div><div class="l">New leads</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-card"><div class="v" data-stat="leads_today">—</div><div class="l">Leads today</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-card"><div class="v" data-stat="bookings_today">—</div><div class="l">Classes today</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-card"><div class="v" data-stat="members_paid">—</div><div class="l">Paid members</div></div></div>
+    </div>
+
+    <!-- 30-day chart -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="chart-wrap">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <strong style="font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; color:var(--c-mute);">Leads · Last 30 days</strong>
+              <div style="font-family: var(--f-display); font-size: 1.5rem; line-height:1; margin-top:.3rem;" id="chartTotal">—</div>
+            </div>
+            <div class="d-flex gap-3 text-secondary" style="font-size:.82rem;">
+              <span><span class="stat-num" data-stat="leads_week">—</span> last 7d</span>
+              <span><span class="stat-num" data-stat="newsletter_active">—</span> newsletter</span>
+            </div>
+          </div>
+          <div id="chartHost" style="height:160px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav nav-tabs mb-3" id="adminTabs">
+      <li class="nav-item"><a class="nav-link active" href="#" data-tab="leads">Leads</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="contacts">Contacts</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="members">Members</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="schedule">Schedule</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="webhooks">Webhooks</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="broadcast">Newsletter</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="audit">Audit log</a></li>
+    </ul>
+
+    <div class="lead-wrap light p-0" style="overflow:hidden;">
+      <div id="tableHost" style="overflow-x:auto;"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Live feed (top-right toasts when SSE fires) -->
+<div class="live-feed" id="liveFeed" aria-live="polite" aria-atomic="true"></div>
+
+<div class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+<script src="js/api.js" defer></script>
+<script src="js/app.js" defer></script>
+<script>
+(function () {
+  var current = 'leads';
+  var sse = null;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+
+  // SQLite hands back "2026-09-14 12:37:35". Nobody reads seconds in a list.
+  function fmtWhen(v) {
+    var d = new Date(String(v).replace(' ', 'T') + 'Z');
+    if (isNaN(d)) return v;
+    return d.toLocaleString('en-GB', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  function sparkline(points, total) {
+    if (!points.length) return '<p class="text-secondary mb-0">No data yet.</p>';
+    var W = 800, H = 160, P = 16;
+    var max = Math.max(1, ...points.map(function (p) { return p.c; }));
+    var step = (W - P*2) / Math.max(1, points.length - 1);
+    var pts = points.map(function (p, i) {
+      var x = P + i * step;
+      var y = H - P - (p.c / max) * (H - P*2);
+      return { x: x, y: y, c: p.c, d: p.d };
+    });
+    var path = 'M' + pts.map(function (p) { return p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' L');
+    var area = path + ` L${pts[pts.length-1].x.toFixed(1)},${H-P} L${pts[0].x.toFixed(1)},${H-P} Z`;
+    var dots = pts.map(function (p) {
+      return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3" fill="#C8102E"><title>${esc(p.d)} · ${p.c} leads</title></circle>`;
+    }).join('');
+    return `
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:100%;display:block;">
+        <defs>
+          <linearGradient id="grd" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#C8102E" stop-opacity=".25"/>
+            <stop offset="1" stop-color="#C8102E" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="${area}" fill="url(#grd)"/>
+        <path d="${path}" fill="none" stroke="#C8102E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        ${dots}
+      </svg>`;
+  }
+
+  function fillSeries(api30) {
+    var by = {}; api30.forEach(function (r) { by[r.d] = r.c; });
+    var out = [];
+    var d = new Date(); d.setHours(0,0,0,0);
+    var start = new Date(d); start.setDate(start.getDate() - 29);
+    for (var i = 0; i < 30; i++) {
+      var iso = start.toISOString().slice(0, 10);
+      out.push({ d: iso, c: by[iso] || 0 });
+      start.setDate(start.getDate() + 1);
+    }
+    return out;
+  }
+
+  function renderLeads(rows) {
+    if (!rows.length) return '<p class="text-secondary p-4 mb-0">No leads yet. Submit one from the trial form to populate this list.</p>';
+    // One Status column: the select both shows and sets the value, so the
+    // separate pill was saying the same thing twice.
+    return '<table><thead><tr><th>When</th><th>Name</th><th>Email</th><th>Phone</th><th>Program</th><th>Status</th></tr></thead><tbody>' +
+      rows.map(function (r) {
+        return '<tr>' +
+          '<td>' + esc(fmtWhen(r.created_at)) + '</td>' +
+          '<td><strong>' + esc(r.first_name) + ' ' + esc(r.last_name || '') + '</strong></td>' +
+          '<td><a href="mailto:' + esc(r.email) + '">' + esc(r.email) + '</a></td>' +
+          '<td>' + (r.phone ? '<a href="tel:' + esc(r.phone) + '">' + esc(r.phone) + '</a>' : '<span class="td-none">—</span>') + '</td>' +
+          '<td>' + esc(r.program || '—') + '</td>' +
+          '<td><select data-status="' + r.id + '" class="status-select is-' + esc(r.status) + '" aria-label="Lead status">' +
+          ['new','contacted','booked','closed','spam'].map(function (s) {
+            return '<option value="' + s + '"' + (s === r.status ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>';
+          }).join('') + '</select></td>' +
+          '</tr>';
+      }).join('') + '</tbody></table>';
+  }
+  function renderContacts(rows) {
+    if (!rows.length) return '<p class="text-secondary p-4 mb-0">No contact messages yet.</p>';
+    return '<table><thead><tr><th>When</th><th>Name</th><th>Email</th><th>Topic</th><th>Message</th></tr></thead><tbody>' +
+      rows.map(function (r) {
+        return '<tr><td>' + esc(fmtWhen(r.created_at)) + '</td>' +
+          '<td>' + esc(r.name) + '</td>' +
+          '<td><a href="mailto:' + esc(r.email) + '">' + esc(r.email) + '</a></td>' +
+          '<td>' + esc(r.topic || '—') + '</td>' +
+          '<td style="max-width:480px; white-space:pre-wrap;">' + esc(r.message) + '</td></tr>';
+      }).join('') + '</tbody></table>';
+  }
+  function renderMembers(rows) {
+    if (!rows.length) return '<p class="text-secondary p-4 mb-0">No members yet.</p>';
+    return '<table><thead><tr><th>Joined</th><th>Name</th><th>Email</th><th>Plan</th><th>Role</th><th>Verified</th><th>Last login</th></tr></thead><tbody>' +
+      rows.map(function (r) {
+        return '<tr>' +
+          '<td>' + esc(fmtWhen(r.created_at)) + '</td>' +
+          '<td>' + esc(r.first_name || '') + ' ' + esc(r.last_name || '') + '</td>' +
+          '<td>' + esc(r.email) + '</td>' +
+          '<td>' + esc(r.plan || '—') + '</td>' +
+          '<td><select data-role="' + r.id + '" class="form-control-forge" style="background:#fff; color: var(--c-ink); padding:.35rem; font-size:.78rem;">' +
+          ['member','admin'].map(function (s) {
+            return '<option value="' + s + '"' + (s === r.role ? ' selected' : '') + '>' + s + '</option>';
+          }).join('') + '</select></td>' +
+          '<td>' + (r.email_verified_at ? '✓' : '—') + '</td>' +
+          '<td>' + esc(r.last_login_at || '—') + '</td>' +
+          '</tr>';
+      }).join('') + '</tbody></table>';
+  }
+  function renderAudit(rows) {
+    if (!rows.length) return '<p class="text-secondary p-4 mb-0">No audit entries yet.</p>';
+    return '<table><thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Entity</th><th>Meta</th><th>IP</th></tr></thead><tbody>' +
+      rows.map(function (r) {
+        return '<tr><td>' + esc(fmtWhen(r.created_at)) + '</td>' +
+          '<td>' + esc(r.actor || '—') + '</td>' +
+          '<td><code>' + esc(r.action) + '</code></td>' +
+          '<td>' + esc(r.entity || '—') + (r.entity_id ? ' #' + r.entity_id : '') + '</td>' +
+          '<td><code style="font-size:.7rem; color:var(--c-mute);">' + esc(r.meta || '') + '</code></td>' +
+          '<td>' + esc(r.ip || '—') + '</td></tr>';
+      }).join('') + '</tbody></table>';
+  }
+  function renderBroadcast() {
+    return `<div class="p-4">
+      <h4 class="mb-3">Send a newsletter</h4>
+      <p class="text-secondary" style="font-size:.92rem;">All active subscribers will receive this message. Unsubscribe link is appended automatically.</p>
+      <form id="bcForm">
+        <div class="field-wrap mb-3">
+          <label class="form-label-forge" for="bcSubject">Subject</label>
+          <input class="form-control-forge" id="bcSubject" required maxlength="200">
+        </div>
+        <div class="field-wrap mb-3">
+          <label class="form-label-forge" for="bcBody">Body (plain text)</label>
+          <textarea class="form-control-forge" id="bcBody" rows="10" required></textarea>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+          <button type="button" class="btn-forge btn-dark-forge" data-test="1">Send test to me</button>
+          <button type="submit" class="btn-forge btn-primary-forge">Send to all subscribers</button>
+        </div>
+      </form>
+    </div>`;
+  }
+
+  function load() {
+    var host = document.getElementById('tableHost');
+    host.innerHTML = '<p class="text-secondary p-4 mb-0">Loading…</p>';
+    if (current === 'broadcast') { host.innerHTML = renderBroadcast(); bindBroadcast(); return; }
+    if (current === 'schedule')  { renderScheduleEditor(host); return; }
+    if (current === 'webhooks')  { renderWebhookManager(host); return; }
+
+    var fn = ({ leads: 'adminLeads', contacts: 'adminContacts', members: 'adminMembers', audit: 'adminAudit' })[current];
+    window.forgeAPI[fn]().then(function (r) {
+      if (current === 'leads') {
+        host.innerHTML = renderLeads(r.leads);
+        host.querySelectorAll('[data-status]').forEach(function (sel) {
+          sel.addEventListener('change', function () {
+            // Recolour straight away so the row reflects the choice before
+            // the round-trip finishes.
+            sel.className = 'status-select is-' + sel.value;
+            window.forgeAPI.adminPatchLead(sel.dataset.status, sel.value)
+              .then(function () { window.forgeToast('Updated.', 'success'); load(); loadStats(); });
+          });
+        });
+      }
+      if (current === 'contacts') host.innerHTML = renderContacts(r.contacts);
+      if (current === 'members')  {
+        host.innerHTML = renderMembers(r.members);
+        host.querySelectorAll('[data-role]').forEach(function (sel) {
+          sel.addEventListener('change', function () {
+            window.forgeAPI.adminPatchMember(sel.dataset.role, sel.value)
+              .then(function () { window.forgeToast('Role updated.', 'success'); })
+              .catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Failed.', 'warning'); load(); });
+          });
+        });
+      }
+      if (current === 'audit') host.innerHTML = renderAudit(r.audit);
+    }).catch(function (err) {
+      host.innerHTML = '<p class="text-secondary p-4 mb-0">Failed to load: ' + esc(err.message) + '</p>';
+    });
+  }
+
+  // ─── Schedule editor ───────────────────────────────────────────────────
+  var DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function renderScheduleEditor(host) {
+    host.innerHTML = `<div class="p-4">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h4 class="m-0">Weekly schedule</h4>
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn-forge btn-dark-forge" id="schSeedBtn" type="button">Seed from defaults</button>
+          <button class="btn-forge btn-primary-forge" id="schAddBtn" type="button">+ Add class</button>
+        </div>
+      </div>
+      <div id="schList"><p class="text-secondary">Loading…</p></div>
+      <p class="text-secondary mt-3" style="font-size:.82rem;">Edits apply immediately. Public schedule + iCal feed update on next request.</p>
+    </div>`;
+    document.getElementById('schAddBtn').addEventListener('click', function () { editClass(null); });
+    document.getElementById('schSeedBtn').addEventListener('click', function () {
+      if (!confirm('Seed the schedule from the static defaults? Existing entries are kept unless you confirm overwrite.')) return;
+      window.forgeAPI.adminScheduleSeed(false).then(function (r) {
+        window.forgeToast('Seeded ' + r.count + ' classes.', 'success');
+        renderScheduleEditor(host);
+      }).catch(function (err) {
+        if (err.status === 409) {
+          if (confirm('Schedule already populated. Overwrite?')) {
+            window.forgeAPI.adminScheduleSeed(true).then(function () { renderScheduleEditor(host); });
+          }
+        } else window.forgeToast('Seed failed.', 'warning');
+      });
+    });
+    window.forgeAPI.adminScheduleList().then(function (r) {
+      var list = document.getElementById('schList');
+      if (!r.classes.length) { list.innerHTML = '<p class="text-secondary">No classes yet. Click <strong>Seed from defaults</strong> to start, or <strong>+ Add class</strong>.</p>'; return; }
+      list.innerHTML = '<table><thead><tr><th>Day</th><th>Time</th><th>Title</th><th>Coach</th><th>Capacity</th><th>Active</th><th></th></tr></thead><tbody>' +
+        r.classes.map(function (c) {
+          return '<tr>' +
+            '<td>' + DAYS[c.day] + '</td>' +
+            '<td>' + esc(c.time) + ' (' + c.duration + 'm)</td>' +
+            '<td>' + esc(c.title) + '<br><span class="text-secondary" style="font-size:.78rem;">' + esc(c.prog) + ' · ' + esc(c.level) + '</span></td>' +
+            '<td>' + esc(c.coach || '—') + '</td>' +
+            '<td>' + c.capacity + '</td>' +
+            '<td>' + (c.active ? '✓' : '—') + '</td>' +
+            '<td><button class="btn-forge btn-dark-forge" style="padding:.35rem .7rem; font-size:.75rem;" data-edit="' + c.id + '">Edit</button> ' +
+                '<button class="btn-forge btn-ghost-forge" style="padding:.35rem .7rem; font-size:.75rem; color: var(--c-blood); border-color: rgba(200,16,46,.3);" data-del="' + c.id + '">×</button></td>' +
+            '</tr>';
+        }).join('') + '</tbody></table>';
+      list.querySelectorAll('[data-edit]').forEach(function (b) { b.addEventListener('click', function () { editClass(parseInt(b.dataset.edit, 10), r.classes); }); });
+      list.querySelectorAll('[data-del]').forEach(function (b) { b.addEventListener('click', function () {
+        if (!confirm('Delete this class? Existing bookings keep their record.')) return;
+        window.forgeAPI.adminScheduleDelete(b.dataset.del).then(function () { renderScheduleEditor(host); });
+      }); });
+    });
+  }
+  function editClass(id, all) {
+    var existing = id ? (all || []).find(function (c) { return c.id === id; }) || {} : {};
+    var f = {
+      day:      prompt('Day (0=Sun..6=Sat):', existing.day != null ? existing.day : '1'),
+      time:     prompt('Time HH:MM:', existing.time || '18:00'),
+      duration: prompt('Duration (minutes):', existing.duration || 60),
+      prog:     prompt('Program (BJJ / MuayThai / Boxing / Kids):', existing.prog || 'BJJ'),
+      level:    prompt('Level:', existing.level || 'All'),
+      coach:    prompt('Coach name:', existing.coach || ''),
+      title:    prompt('Class title:', existing.title || 'BJJ Fundamentals'),
+      capacity: prompt('Capacity:', existing.capacity || 20),
+    };
+    if (!f.time || !f.title) return;
+    var data = { day: +f.day, time: f.time, duration: +f.duration, prog: f.prog, level: f.level, coach: f.coach, title: f.title, capacity: +f.capacity };
+    var p = id ? window.forgeAPI.adminScheduleUpdate(id, data) : window.forgeAPI.adminScheduleCreate(data);
+    p.then(function () { window.forgeToast('Saved.', 'success'); renderScheduleEditor(document.getElementById('tableHost')); })
+     .catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Save failed.', 'warning'); });
+  }
+
+  // ─── Webhook manager ───────────────────────────────────────────────────
+  function renderWebhookManager(host) {
+    host.innerHTML = `<div class="p-4">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h4 class="m-0">Webhook subscriptions</h4>
+        <button class="btn-forge btn-primary-forge" id="whAddBtn" type="button">+ New webhook</button>
+      </div>
+      <p class="text-secondary" style="font-size:.92rem;">Wire any event to any URL — Zapier, Make, n8n, your own CRM. Payloads are HMAC-signed if you provide a secret.</p>
+      <div id="whList"><p class="text-secondary">Loading…</p></div>
+    </div>`;
+    document.getElementById('whAddBtn').addEventListener('click', function () { editWebhook(null); });
+    window.forgeAPI.adminWebhookList().then(function (r) {
+      var list = document.getElementById('whList');
+      if (!r.subscriptions.length) { list.innerHTML = '<p class="text-secondary">No webhooks yet.</p>'; return; }
+      list.innerHTML = '<table><thead><tr><th>URL</th><th>Events</th><th>Last status</th><th>Active</th><th></th></tr></thead><tbody>' +
+        r.subscriptions.map(function (s) {
+          var statusCol = s.last_status ? (s.last_status >= 200 && s.last_status < 300 ? '#1f7a31' : 'var(--c-blood)') : 'var(--c-mute)';
+          return '<tr>' +
+            '<td style="max-width:280px;word-break:break-all;font-family:monospace;font-size:.78rem;">' + esc(s.url) + '</td>' +
+            '<td><code>' + esc(s.events) + '</code></td>' +
+            '<td style="color:' + statusCol + ';">' + (s.last_status || '—') + '<br><span class="text-secondary" style="font-size:.72rem;">' + esc(s.last_at || 'never') + '</span></td>' +
+            '<td>' + (s.active ? '✓' : '—') + '</td>' +
+            '<td><button class="btn-forge btn-dark-forge" style="padding:.35rem .7rem; font-size:.75rem;" data-test="' + s.id + '">Send test</button> ' +
+                '<button class="btn-forge btn-ghost-forge" style="padding:.35rem .7rem; font-size:.75rem; color: var(--c-blood); border-color: rgba(200,16,46,.3);" data-del="' + s.id + '">×</button></td>' +
+            '</tr>';
+        }).join('') + '</tbody></table>';
+      list.querySelectorAll('[data-test]').forEach(function (b) { b.addEventListener('click', function () {
+        window.forgeAPI.adminWebhookTest(b.dataset.test).then(function () { window.forgeToast('Test sent.', 'success'); setTimeout(function () { renderWebhookManager(host); }, 600); });
+      }); });
+      list.querySelectorAll('[data-del]').forEach(function (b) { b.addEventListener('click', function () {
+        if (!confirm('Delete this webhook?')) return;
+        window.forgeAPI.adminWebhookDelete(b.dataset.del).then(function () { renderWebhookManager(host); });
+      }); });
+    });
+  }
+  function editWebhook(id) {
+    var url    = prompt('Webhook URL (https://):', 'https://hooks.zapier.com/...');
+    if (!url) return;
+    var events = prompt('Events (comma-separated, * for all):\n\nlead.created, contact.created, booking.confirmed, booking.cancelled, member.registered, attendance.marked, subscription.created', '*');
+    if (!events) return;
+    var secret = prompt('Optional HMAC secret (we sign payloads with it):', '');
+    window.forgeAPI.adminWebhookCreate({ url: url, events: events, secret: secret })
+      .then(function () { window.forgeToast('Webhook saved.', 'success'); renderWebhookManager(document.getElementById('tableHost')); })
+      .catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Save failed.', 'warning'); });
+  }
+
+  function bindBroadcast() {
+    var form = document.getElementById('bcForm');
+    function send(test) {
+      var data = { subject: document.getElementById('bcSubject').value, body: document.getElementById('bcBody').value, test: !!test };
+      if (!data.subject || !data.body) { window.forgeToast('Subject and body are required.', 'warning'); return; }
+      window.forgeAPI.adminBroadcast(data)
+        .then(function (r) { window.forgeToast('Sent ' + r.sent + ' / ' + r.total + ' emails.', 'success'); })
+        .catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Send failed.', 'warning'); });
+    }
+    form.addEventListener('submit', function (e) { e.preventDefault(); send(false); });
+    form.querySelector('[data-test]').addEventListener('click', function () { send(true); });
+  }
+
+  function loadStats() {
+    window.forgeAPI.adminStats().then(function (r) {
+      Object.keys(r.stats).forEach(function (k) {
+        var el = document.querySelector('[data-stat="' + k + '"]');
+        if (el) el.textContent = r.stats[k].toLocaleString('en-GB');
+      });
+      var series = fillSeries(r.leads_30d || []);
+      var total  = series.reduce(function (s, p) { return s + p.c; }, 0);
+      document.getElementById('chartTotal').textContent = total.toLocaleString('en-GB') + ' leads';
+      document.getElementById('chartHost').innerHTML = sparkline(series, total);
+    }).catch(function () {});
+  }
+
+  function pushLive(kind, payload) {
+    var feed = document.getElementById('liveFeed');
+    var card = document.createElement('div');
+    card.className = 'live-feed-card';
+    if (kind === 'lead') {
+      card.innerHTML = '<strong>🔔 New lead</strong><br>' + esc(payload.first_name + ' ' + (payload.last_name || '')) + ' · ' + esc(payload.email) + '<br><span style="opacity:.7;">' + esc(payload.program || '—') + '</span>';
+    } else if (kind === 'contact') {
+      card.innerHTML = '<strong>📨 New contact</strong><br>' + esc(payload.name) + ' · ' + esc(payload.email) + '<br><span style="opacity:.7;">' + esc(payload.topic || '—') + '</span>';
+    } else { card.textContent = '⚡ ' + kind; }
+    feed.appendChild(card);
+    setTimeout(function () { card.style.transition = 'opacity .4s'; card.style.opacity = '0'; setTimeout(function () { card.remove(); }, 400); }, 7000);
+    if (current === 'leads' || current === 'contacts') load();
+    loadStats();
+  }
+
+  function showDash(member) {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('dashSection').style.display = '';
+    document.getElementById('logoutBtn').style.display = '';
+    document.getElementById('adminEmail').textContent = member.email;
+    loadStats(); load();
+    if (sse) { try { sse.close(); } catch (e) {} }
+    sse = window.forgeAPI.subscribeEvents({
+      hello:   function () {
+        var s = document.getElementById('liveStatus');
+        s.innerHTML = '<span class="live-dot"></span>live';
+      },
+      lead:    function (p) { pushLive('lead',    p); },
+      contact: function (p) { pushLive('contact', p); },
+    });
+  }
+  function showLogin() {
+    document.getElementById('loginSection').style.display = '';
+    document.getElementById('dashSection').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('adminEmail').textContent = '';
+    if (sse) { try { sse.close(); } catch (e) {} sse = null; }
+  }
+
+  function init() {
+    if (!window.forgeAPI) { setTimeout(init, 100); return; }
+    document.querySelectorAll('[data-tab]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelectorAll('[data-tab]').forEach(function (x) { x.classList.remove('active'); });
+        a.classList.add('active');
+        current = a.dataset.tab; load();
+      });
+    });
+    document.getElementById('refreshBtn').addEventListener('click', function () { loadStats(); load(); });
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+      window.forgeAPI.logout().then(function () { showLogin(); window.forgeToast('Signed out.', 'success'); });
+    });
+    document.getElementById('adminLogin').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.forgeAPI.login({ email: this.email.value.trim(), password: this.password.value }).then(function (r) {
+        if (r.member && r.member.role === 'admin') showDash(r.member);
+        else { window.forgeToast('That account is not an admin.', 'warning'); window.forgeAPI.logout(); }
+      }).catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Sign-in failed.', 'warning'); });
+    });
+
+    window.forgeAPI.probe().then(function (ok) {
+      if (!ok) { window.forgeToast('Backend not reachable.', 'warning'); return; }
+      window.forgeAPI.me().then(function (r) {
+        if (r.member && r.member.role === 'admin') showDash(r.member);
+        else showLogin();
+      }).catch(showLogin);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "$lang": "en-GB",
+  "$rtl": false,
+  "$name": "English",
+
+  "nav.schedule":  "Schedule",
+  "nav.pricing":   "Pricing",
+  "nav.coaches":   "Coaches",
+  "nav.reviews":   "Reviews",
+  "nav.gallery":   "Gallery",
+  "nav.events":    "Events",
+  "nav.contact":   "Contact",
+  "nav.members":   "Members",
+  "nav.book":      "Book Free Trial",
+
+  "cta.book":      "Claim Your Free Trial",
+  "cta.programs":  "See Programs",
+  "cta.signin":    "Sign in",
+  "cta.signout":   "Sign out",
+  "cta.subscribe": "Subscribe",
+
+  "common.loading":     "Loading…",
+  "common.email":       "Email",
+  "common.password":    "Password",
+  "common.firstName":   "First name",
+  "common.lastName":    "Last name",
+  "common.phone":       "Phone",
+  "common.cancel":      "Cancel",
+  "common.save":        "Save",
+
+  "trust.noCard":       "No card on file",
+  "trust.noContract":   "No contracts",
+  "trust.moneyBack":    "7-day money-back",
+
+  "pwa.install.title":   "Install Forge",
+  "pwa.install.body":    "Add Forge to your home screen — works offline.",
+  "pwa.install.go":      "Install",
+  "pwa.install.dismiss": "Not now",
+
+  "footer.cookieSettings": "Cookie settings",
+  "footer.calendar":       "Subscribe to calendar"
+}

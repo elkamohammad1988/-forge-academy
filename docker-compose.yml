@@ -1,0 +1,33 @@
+services:
+  forge:
+    build: .
+    container_name: forge-academy
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - forge-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  # Optional: put Caddy in front for automatic HTTPS
+  # caddy:
+  #   image: caddy:2-alpine
+  #   restart: unless-stopped
+  #   ports: ["80:80", "443:443"]
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile:ro
+  #     - caddy-data:/data
+  #     - caddy-config:/config
+  #   depends_on: [forge]
+
+volumes:
+  forge-data:
+  # caddy-data:
+  # caddy-config:

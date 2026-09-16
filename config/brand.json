@@ -1,0 +1,55 @@
+{
+  "$schema": "Single source of truth for white-labelling. Change these values, run `npm run brand:apply`, and the whole site rebrands.",
+
+  "name":          "Forge Martial Arts Academy",
+  "shortName":     "Forge",
+  "tagline":       "Step On The Mat. Forge Yourself.",
+  "city":          "Manchester",
+  "established":   "2014",
+
+  "url":           "https://forgemartialarts.co.uk",
+  "email":         "hello@forgemartialarts.co.uk",
+  "phoneDisplay":  "0161 200 0000",
+  "phoneTel":      "+441612000000",
+  "whatsapp":      "+441612000000",
+
+  "address": {
+    "street":   "Unit 4, Dale Street",
+    "city":     "Manchester",
+    "postcode": "M1 1JW",
+    "country":  "GB",
+    "lat":      53.4820,
+    "lng":      -2.2300
+  },
+
+  "hours": [
+    { "day": 1, "open": "06:00", "close": "21:30", "label": "Mon" },
+    { "day": 2, "open": "06:00", "close": "21:30", "label": "Tue" },
+    { "day": 3, "open": "06:00", "close": "21:30", "label": "Wed" },
+    { "day": 4, "open": "06:00", "close": "21:30", "label": "Thu" },
+    { "day": 5, "open": "06:00", "close": "21:30", "label": "Fri" },
+    { "day": 6, "open": "09:00", "close": "16:00", "label": "Sat" },
+    { "day": 0, "open": "10:00", "close": "13:00", "label": "Sun" }
+  ],
+
+  "social": {
+    "instagram": "https://www.instagram.com/forgemartialartsmanchester",
+    "facebook":  "https://www.facebook.com/forgemartialartsmanchester",
+    "youtube":   "",
+    "tiktok":    ""
+  },
+
+  "stats": {
+    "members":   "",
+    "coaches":   "",
+    "rating":    "",
+    "reviews":   "",
+    "yearsOpen": ""
+  },
+
+  "legal": {
+    "company":    "Forge Martial Arts Academy Ltd",
+    "vatNumber":  "",
+    "registered": ""
+  }
+}

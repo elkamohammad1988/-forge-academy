@@ -1,0 +1,28 @@
+{
+  "$schema": "Toggle features without touching code. Flip to false and re-deploy to hide.",
+
+  "memberPortal":      true,
+  "coachPanel":        true,
+  "adminLiveFeed":     true,
+  "stripeCheckout":    true,
+  "stripeBillingPortal": true,
+  "newsletterBroadcast": true,
+  "blog":              true,
+  "referralProgram":   true,
+  "classWaitlist":     true,
+  "classCheckin":      true,
+  "openApi":           true,
+  "metrics":           true,
+  "ssePush":           true,
+  "ownerNotifications": {
+    "slack":    true,
+    "discord":  true,
+    "telegram": true,
+    "generic":  true
+  },
+  "analytics": {
+    "ga4":      false,
+    "plausible": false
+  },
+  "demoMedia":          true
+}

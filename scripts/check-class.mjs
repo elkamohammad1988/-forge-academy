@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+const page = await ctx.newPage();
+const errors = [];
+page.on('pageerror',  e => errors.push(`PAGEERR: ${e.message}`));
+page.on('console',    m => { if (m.type() === 'error') errors.push(`CONSOLE: ${m.text()}`); });
+await page.goto('http://localhost:3000/class.html?day=6&time=09:30', { waitUntil: 'networkidle', timeout: 20000 });
+await page.waitForTimeout(1500);
+const heading = await page.locator('#classDetail h1, #classDetail .text-secondary').first().textContent().catch(() => '(no heading)');
+const status  = await page.locator('#classDetail').textContent();
+console.log('Heading/Status:', heading.slice(0, 100));
+console.log('JS errors:', errors.length, errors.length ? errors.slice(0, 5) : '');
+console.log('Page text snippet:', status.slice(0, 200).replace(/\s+/g,' '));
+await browser.close();

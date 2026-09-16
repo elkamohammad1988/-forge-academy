@@ -1,0 +1,42 @@
+{
+  "$lang": "ar",
+  "$rtl": true,
+  "$name": "العربية",
+
+  "nav.schedule":  "الجدول",
+  "nav.pricing":   "الأسعار",
+  "nav.coaches":   "المدربون",
+  "nav.reviews":   "آراء الأعضاء",
+  "nav.gallery":   "المعرض",
+  "nav.events":    "الفعاليات",
+  "nav.contact":   "اتصل بنا",
+  "nav.members":   "بوابة الأعضاء",
+  "nav.book":      "احجز حصة مجانية",
+
+  "cta.book":      "احجز حصتك المجانية",
+  "cta.programs":  "البرامج",
+  "cta.signin":    "تسجيل الدخول",
+  "cta.signout":   "تسجيل الخروج",
+  "cta.subscribe": "اشترك",
+
+  "common.loading":     "جارٍ التحميل…",
+  "common.email":       "البريد الإلكتروني",
+  "common.password":    "كلمة المرور",
+  "common.firstName":   "الاسم",
+  "common.lastName":    "اللقب",
+  "common.phone":       "الهاتف",
+  "common.cancel":      "إلغاء",
+  "common.save":        "حفظ",
+
+  "trust.noCard":       "بدون بطاقة بنكية",
+  "trust.noContract":   "بدون عقد",
+  "trust.moneyBack":    "استرداد خلال 7 أيام",
+
+  "pwa.install.title":   "تثبيت تطبيق Forge",
+  "pwa.install.body":    "أضف Forge إلى الشاشة الرئيسية — يعمل بدون اتصال.",
+  "pwa.install.go":      "تثبيت",
+  "pwa.install.dismiss": "ليس الآن",
+
+  "footer.cookieSettings": "إعدادات الكوكيز",
+  "footer.calendar":       "الاشتراك في التقويم"
+}

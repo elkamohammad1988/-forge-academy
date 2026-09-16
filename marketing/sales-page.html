@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge Academy — Production gym website + booking + payments + member portal</title>
+<meta name="description" content="A complete, production-ready gym website with member portal, admin dashboard, Stripe checkout and a live admin feed. Deploy in an afternoon. White-label in minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- forge-theme-bootstrap -->
+<script>(function(){try{var k='forge:theme';var s=localStorage.getItem(k);var t=s||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='dark'?'#0E0F12':'#F7F4EE');}catch(e){}})();</script>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  body { background: var(--c-bone); }
+  .hero-pitch { background: linear-gradient(180deg, rgba(14,15,18,.85), rgba(14,15,18,.95)), radial-gradient(ellipse at 70% 30%, rgba(200,16,46,.4) 0%, transparent 55%), var(--c-ink); color: var(--c-bone); padding: var(--r-7) 0; }
+  .price-tag { font-family: var(--f-display); font-size: clamp(4rem, 14vw, 7rem); color: var(--c-gold); line-height: 1; }
+  .check-list li { padding: .55rem 0; border-bottom: 1px solid var(--c-line); display:flex; gap:.6rem; align-items: flex-start; }
+  .check-list li::before { content:'✓'; flex-shrink:0; background: var(--c-blood); color:#fff; width:22px; height:22px; border-radius:50%; display:grid; place-items:center; font-size:.75rem; font-weight:800; margin-top:.15rem; }
+  .compare th { background: var(--c-ink); color: var(--c-bone); padding: 1rem; text-align:center; font-family: var(--f-display); letter-spacing:.06em; text-transform:uppercase; }
+  .compare td { padding: .85rem 1rem; border-bottom: 1px solid var(--c-line); text-align: center; }
+  .compare td:first-child { text-align:left; font-weight:600; }
+  .compare .yes { color: #1f7a31; font-weight: 800; }
+  .compare .no  { color: var(--c-mute); }
+</style>
+</head>
+<body>
+
+<section class="hero-pitch">
+  <div class="container text-center">
+    <span class="eyebrow" style="color: var(--c-gold);">Production-ready · v1.0</span>
+    <h1 style="color: var(--c-bone);">A Complete Gym Website.<br><span style="color: var(--c-blood);">In One Folder.</span></h1>
+    <p class="lead" style="color: rgba(247,244,238,.85); max-width: 60ch; margin: 1rem auto;">
+      Forge Academy is the website, member portal, admin dashboard, booking system, Stripe
+      checkout, email pipeline and live ops feed I'd build for a martial-arts gym I owned —
+      ready to deploy this afternoon. White-label it for your gym, your studio, your dojo.
+    </p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+      <a href="#what-you-get" class="btn-forge btn-primary-forge btn-arrow">See What's Inside</a>
+      <a href="#price" class="btn-forge btn-ghost-forge">Pricing</a>
+    </div>
+    <div class="row g-4 mt-5 text-start">
+      <div class="col-md-3"><div class="price-tag">8</div><span style="color:rgba(247,244,238,.6); letter-spacing:.18em; text-transform:uppercase; font-size:.78rem;">HTML pages</span></div>
+      <div class="col-md-3"><div class="price-tag">25+</div><span style="color:rgba(247,244,238,.6); letter-spacing:.18em; text-transform:uppercase; font-size:.78rem;">API endpoints</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-bone" id="what-you-get">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-7">
+        <span class="eyebrow">What's in the box</span>
+        <h2>Every Page A Real Gym Needs.<br>Every Click Goes Somewhere.</h2>
+        <p class="text-secondary lead">Eight production-grade pages, a full Node backend, Stripe checkout, member portal, admin dashboard with a 30-day chart, real-time live feed when leads come in, HTML email templates, owner pings on Slack/Discord/Telegram, Markdown blog system, and a Docker + Caddy stack that gets you to HTTPS in one command.</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">01</span>
+          <div class="feature-icon">🏠</div>
+          <h3>Public site</h3>
+          <p>Home, schedule (filterable), pricing (with monthly/annual toggle), coaches (with bio modals), contact, free-trial booking, thank-you with .ics calendar download, blog, 404. All mobile-first, all SEO-perfect.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">02</span>
+          <div class="feature-icon">👤</div>
+          <h3>Member portal</h3>
+          <p>Sign-up, sign-in, password reset (with branded HTML email), email verification, profile editing, change password, upcoming bookings with cancel + waitlist promotion, Stripe billing portal access.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">03</span>
+          <div class="feature-icon">⚡</div>
+          <h3>Live admin</h3>
+          <p>KPIs, 30-day trend chart (inline SVG, zero deps), leads / contacts / members / audit log, status workflow, role management, CSV export, newsletter broadcast — and a <strong>Server-Sent Events live feed</strong> that pops up the moment a lead lands.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">04</span>
+          <div class="feature-icon">💳</div>
+          <h3>Real payments</h3>
+          <p>Stripe Checkout for subscriptions (Kids / Unlimited / Family, monthly &amp; annual). Webhook auto-syncs plan to the member record. Customer Portal lets members manage billing themselves.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">05</span>
+          <div class="feature-icon">🔔</div>
+          <h3>Owner notifications</h3>
+          <p>Get pinged the second a lead lands — Slack, Discord, Telegram, or any generic JSON webhook (Zapier / Make / n8n / your CRM). Plus branded HTML emails to both you and the prospect.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">06</span>
+          <div class="feature-icon">🔒</div>
+          <h3>Security baked in</h3>
+          <p>CSP on every page, SRI on the Bootstrap CDN, HSTS, COOP / CORP, Permissions-Policy, honeypot + render-timestamp anti-bot, bcrypt + JWT, rate limiting, prepared statements everywhere.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">07</span>
+          <div class="feature-icon">📈</div>
+          <h3>SEO maxed</h3>
+          <p>Per-page JSON-LD (LocalBusiness, Course, Product, Person, FAQPage, BreadcrumbList), canonical, hreflang, OG, Twitter Cards, sitemap with lastmod, robots opting out of AI scrapers.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">08</span>
+          <div class="feature-icon">🐳</div>
+          <h3>One-command deploy</h3>
+          <p><code>docker compose up -d --build</code> with Caddy auto-fetches a Let's Encrypt cert. Or <code>npm start</code> on any VPS. Or push to Render / Railway / Fly. <strong>Static-only fallback</strong> works on Netlify / Cloudflare Pages with zero backend.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <span class="feature-num">09</span>
+          <div class="feature-icon">🎨</div>
+          <h3>White-label in 2 files</h3>
+          <p>Edit <code>config/brand.json</code> and <code>config/theme.json</code> — name, contact, hours, social, colours, fonts. The whole system rebrands. No code changes needed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-7">
+        <span class="eyebrow">Compare</span>
+        <h2>Why Not Just Use<br>WordPress / Squarespace / Wix?</h2>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="compare" style="background:#fff;">
+        <thead>
+          <tr>
+            <th></th>
+            <th>WordPress + plugins</th>
+            <th>Squarespace / Wix</th>
+            <th style="background: var(--c-blood);">Forge Academy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Real SQLite-backed lead pipeline</td><td class="no">via plugin</td><td class="no">limited</td><td class="yes">✓ built-in</td></tr>
+          <tr><td>Stripe Checkout + Customer Portal</td><td class="no">paid plugin</td><td class="no">Stripe Connect</td><td class="yes">✓ built-in</td></tr>
+          <tr><td>Live admin feed (SSE)</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Slack / Discord / Telegram pings</td><td class="no">via Zapier ($)</td><td class="no">via Zapier ($)</td><td class="yes">✓ native</td></tr>
+          <tr><td>Member portal with bookings</td><td class="no">heavy plugin</td><td class="no">Member Areas (paid)</td><td class="yes">✓</td></tr>
+          <tr><td>Class capacity + waitlist auto-promote</td><td class="no">heavy plugin</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Full security headers</td><td class="no">manual</td><td class="no">N/A</td><td class="yes">✓</td></tr>
+          <tr><td>You own the code &amp; data</td><td class="yes">✓</td><td class="no">no</td><td class="yes">✓</td></tr>
+          <tr><td>No monthly platform fee</td><td class="yes">✓</td><td class="no">$$$</td><td class="yes">✓ (one-time)</td></tr>
+          <tr><td>Time-to-live</td><td>weeks</td><td>days</td><td class="yes">an afternoon</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section section-bone" id="price">
+  <div class="container text-center">
+    <span class="eyebrow">Pricing</span>
+    <h2>One Price. Yours Forever.</h2>
+    <p class="text-secondary lead" style="max-width:50ch; margin:0 auto;">No subscription. No monthly platform fee. You buy it, you own it, you ship it.</p>
+
+    <div class="row g-4 mt-5 justify-content-center">
+      <div class="col-md-5">
+        <div class="tier tier-featured">
+          <span class="tier-badge">Single-Gym Licence</span>
+          <h3 class="tier-name">Studio</h3>
+          <div class="tier-tag">For one independent gym, dojo or studio</div>
+          <div>
+            <span class="tier-price">$2,000</span>
+            <span class="tier-period">one-time</span>
+          </div>
+          <ul class="tier-feats">
+            <li>Full source code, MIT-style modification rights for your business</li>
+            <li>Deploy on any number of servers you control</li>
+            <li>30 days of email support included</li>
+            <li>14-day money-back guarantee</li>
+            <li>Free updates within v1.x</li>
+            <li>Setup video walkthrough &amp; full docs</li>
+          </ul>
+          <div class="tier-cta-row">
+            <a href="mailto:hello@example.com?subject=Forge%20Academy%20Studio%20Licence" class="btn-forge btn-primary-forge">Buy Studio Licence</a>
+          </div>
+          <p class="tier-fineprint">Want to resell? Ask about the Agency licence.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+    <span class="eyebrow">FAQ</span>
+    <h2 style="font-size: clamp(2rem,5vw,3rem);">Quick answers.</h2>
+    <div class="text-start mt-4" style="max-width: 720px; margin: 0 auto;">
+      <div class="faq-item open">
+        <button class="faq-q" aria-expanded="true" type="button">How do I rebrand it for my gym?<span class="plus">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Edit <code>config/brand.json</code> (name, contact, hours, social) and <code>config/theme.json</code> (colours, fonts). Restart. Done. The whole system pulls from there.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" type="button">Do I need to know how to code?<span class="plus">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">If you can edit a JSON file and run two commands in a terminal, you can deploy it. The setup wizard (<code>npm run setup</code>) walks you through it. For non-technical buyers we offer a paid white-glove install.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" type="button">Where does the data live?<span class="plus">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">A single SQLite file you control. No third-party SaaS lock-in. Daily backups via <code>npm run backup</code>. GDPR-friendly UK/EU hosting wherever you put it.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" type="button">Can I run this without Stripe?<span class="plus">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — Stripe is optional. The pricing buttons fall back to a contact form when Stripe isn't configured. Email + database work fine without it.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" type="button">What happens after 30-day support runs out?<span class="plus">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">You keep the code forever. Free updates within v1.x. Extended support contracts available; or hire any Node developer — the codebase is small, documented, and follows boring industry standards.</div></div>
+      </div>
+    </div>
+    <a href="mailto:hello@example.com?subject=Forge%20Academy" class="btn-forge btn-primary-forge btn-arrow mt-5">Buy Now — $2,000</a>
+  </div>
+</section>
+
+<script src="../js/app.js" defer></script>
+</body>
+</html>

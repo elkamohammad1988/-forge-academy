@@ -1,0 +1,40 @@
+{
+  "name": "Forge Martial Arts Academy — Manchester",
+  "short_name": "Forge",
+  "description": "Manchester's premier martial arts academy. BJJ, Muay Thai, Boxing & Kids classes. Book your free trial.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0E0F12",
+  "theme_color": "#0E0F12",
+  "orientation": "portrait-primary",
+  "lang": "en-GB",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='32' fill='%230E0F12'/><text x='50%25' y='58%25' font-family='Anton,Arial,sans-serif' font-size='128' fill='%23C9A24B' text-anchor='middle'>F</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='80' fill='%230E0F12'/><text x='50%25' y='58%25' font-family='Anton,Arial,sans-serif' font-size='340' fill='%23C9A24B' text-anchor='middle'>F</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book Free Trial",
+      "short_name": "Book",
+      "url": "booking.html",
+      "description": "Book your free trial class"
+    },
+    {
+      "name": "Class Schedule",
+      "short_name": "Schedule",
+      "url": "schedule.html",
+      "description": "Browse this week's classes"
+    }
+  ]
+}

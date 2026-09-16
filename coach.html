@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0F12">
+<title>Coach — Forge Martial Arts Manchester</title>
+<meta name="robots" content="noindex,nofollow">
+
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" referrerpolicy="no-referrer">
+<!-- forge-theme-bootstrap -->
+<script>(function(){try{var k='forge:theme';var s=localStorage.getItem(k);var t=s||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='dark'?'#0E0F12':'#F7F4EE');}catch(e){}})();</script>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230E0F12'/><text x='50%25' y='58%25' font-family='Anton,sans-serif' font-size='20' fill='%23C9A24B' text-anchor='middle'>F</text></svg>">
+<style>
+  body { background: var(--c-bone); }
+  .roster-class { background:#fff; border:1px solid var(--c-line); border-radius: var(--radius); padding: 1.4rem; margin-bottom: 1.5rem; }
+  .roster-class h3 { font-size: 1.4rem; margin-bottom: .35rem; }
+  .roster-meta { font-size:.85rem; color: var(--c-mute); margin-bottom: 1rem; }
+  .roster-row {
+    display: grid; grid-template-columns: 1fr auto; gap:.8rem; align-items: center;
+    padding: .55rem 0; border-bottom: 1px solid var(--c-line);
+  }
+  .att-pills { display:flex; gap:.3rem; flex-wrap:wrap; }
+  .att-pill {
+    background:#fff; border:1px solid var(--c-line); padding:.3rem .55rem; border-radius:6px;
+    font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    cursor:pointer; transition: all .15s;
+  }
+  .att-pill:hover  { border-color: var(--c-ink); }
+  .att-pill[data-active="attended"] { background:#1f7a31; color:#fff; border-color:#1f7a31; }
+  .att-pill[data-active="late"]     { background:#C9A24B; color:#fff; border-color:#C9A24B; }
+  .att-pill[data-active="excused"]  { background:var(--c-charcoal); color:#fff; border-color:var(--c-charcoal); }
+  .att-pill[data-active="no-show"]  { background:var(--c-blood); color:#fff; border-color:var(--c-blood); }
+  .scan-card {
+    background: var(--c-ink); color: var(--c-bone); border-radius: var(--radius);
+    padding: 1.5rem; margin-bottom: 1.5rem;
+  }
+  .scan-card input { background: rgba(247,244,238,.08); border:1px solid rgba(247,244,238,.2); color:var(--c-bone); }
+  .scan-card input:focus { border-color: var(--c-gold); outline:none; }
+</style>
+</head>
+
+<body data-page="coach">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container">
+    <div class="nav-row">
+      <a href="index.html" class="brand"><span class="brand-mark">F</span><span>Forge<span class="brand-sub">Coach</span></span></a>
+      <div class="d-flex gap-2 align-items-center">
+        <span id="coachEmail" class="text-secondary" style="font-size:.85rem;"></span>
+        <button class="btn-forge btn-dark-forge nav-cta" id="logoutBtn" style="display:none;">Sign out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- LOGIN -->
+<section class="section section-bone" id="loginSection">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="lead-wrap light">
+          <span class="eyebrow">Coach</span>
+          <h2>Sign in</h2>
+          <p class="text-secondary">Members with role <code>coach</code> or <code>admin</code> have access.</p>
+          <form id="coachLogin" novalidate>
+            <div class="field-wrap mb-3">
+              <label class="form-label-forge" for="cLoginEmail">Email</label>
+              <input class="form-control-forge" id="cLoginEmail" name="email" type="email" required autocomplete="email">
+            </div>
+            <div class="field-wrap mb-3">
+              <label class="form-label-forge" for="cLoginPassword">Password</label>
+              <input class="form-control-forge" id="cLoginPassword" name="password" type="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-forge btn-primary-forge w-100">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<main id="main">
+<section class="section section-bone" id="rosterSection" style="display:none;">
+  <div class="container">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+      <div>
+        <span class="eyebrow">Today</span>
+        <h1 style="margin:0;" id="todayHeading">—</h1>
+        <p class="text-secondary mb-0" id="rosterSummary">—</p>
+      </div>
+      <div class="d-flex gap-2 align-items-center">
+        <input type="date" class="form-control-forge" id="datePick" style="width:auto;background:#fff;color:var(--c-ink);border-color:var(--c-line);">
+        <button class="btn-forge btn-primary-forge" id="refreshBtn">Refresh</button>
+      </div>
+    </div>
+
+    <!-- Scan -->
+    <div class="scan-card">
+      <h3 style="color:#fff;">Quick check-in</h3>
+      <p style="color:rgba(247,244,238,.75); margin-bottom:1rem;">Paste or scan a member's QR code (a string like <code>5x_abc123…</code>) to instantly mark them as attended in their next class today.</p>
+      <form id="scanForm" class="d-flex gap-2 flex-wrap">
+        <input type="text" id="scanToken" placeholder="Paste token or scan QR…" autofocus style="flex:1; padding:.85rem 1rem; border-radius: var(--radius-sm); font-family: var(--f-body);">
+        <button type="submit" class="btn-forge btn-primary-forge">Check in</button>
+      </form>
+      <p style="color:rgba(247,244,238,.55); font-size:.82rem; margin:.8rem 0 0;" id="scanFeedback">Scanner ready.</p>
+    </div>
+
+    <!-- Roster classes -->
+    <div id="rosterHost"></div>
+
+  </div>
+</section>
+</main>
+
+<div class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+<script src="js/api.js" defer></script>
+<script src="js/app.js" defer></script>
+<script>
+(function () {
+  function $(s) { return document.querySelector(s); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+
+  function showLogin() {
+    $('#loginSection').style.display = '';
+    $('#rosterSection').style.display = 'none';
+    $('#logoutBtn').style.display = 'none';
+    $('#coachEmail').textContent = '';
+  }
+  function showRoster(member) {
+    $('#loginSection').style.display = 'none';
+    $('#rosterSection').style.display = '';
+    $('#logoutBtn').style.display = '';
+    $('#coachEmail').textContent = member.email + ' · ' + member.role;
+    var dp = $('#datePick'); dp.value = new Date().toISOString().slice(0, 10);
+    loadRoster();
+  }
+
+  function renderRoster(date, classes) {
+    if (!classes.length) return '<p class="text-secondary p-4">No classes scheduled with attendees on ' + esc(date) + '.</p>';
+    return classes.map(function (cls) {
+      var when = new Date(cls.starts_at).toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+      var confirmed = cls.roster.filter(function (r) { return r.status === 'confirmed'; });
+      var waitlist  = cls.roster.filter(function (r) { return r.status === 'waitlist'; });
+      var pillsFor = function (r) {
+        return ['attended', 'late', 'no-show', 'excused'].map(function (s) {
+          var active = r.attendance === s ? ' data-active="' + s + '"' : '';
+          return `<button type="button" class="att-pill" data-att="${s}" data-booking="${r.booking_id}"${active}>${s}</button>`;
+        }).join('');
+      };
+      var rosterHtml = confirmed.map(function (r) {
+        return `<div class="roster-row">
+          <div><strong>${esc(r.name || r.email)}</strong>
+               <span class="text-secondary" style="font-size:.82rem;"> · ${esc(r.email)}</span>
+               ${r.checked_in_at ? `<span class="text-secondary" style="font-size:.78rem;"> · ${esc(r.checked_in_at)}</span>` : ''}
+          </div>
+          <div class="att-pills">${pillsFor(r)}</div>
+        </div>`;
+      }).join('');
+      var waitHtml = waitlist.length ? '<details><summary style="cursor:pointer;color:var(--c-mute);font-size:.85rem;margin-top:.6rem;">Waitlist (' + waitlist.length + ')</summary>' +
+        waitlist.map(function (r) { return '<div class="roster-row"><div>#' + (r.waitlist_position || '?') + ' ' + esc(r.name) + ' · <span class="text-secondary">' + esc(r.email) + '</span></div></div>'; }).join('') + '</details>' : '';
+      return `<div class="roster-class">
+        <h3>${esc(cls.title || cls.program)}</h3>
+        <div class="roster-meta">${esc(when)} · ${esc(cls.coach || '—')} · ${confirmed.length} booked${waitlist.length ? ', ' + waitlist.length + ' waitlist' : ''}</div>
+        ${rosterHtml || '<p class="text-secondary">No confirmed attendees yet.</p>'}
+        ${waitHtml}
+      </div>`;
+    }).join('');
+  }
+
+  function loadRoster() {
+    var date = $('#datePick').value;
+    var host = $('#rosterHost');
+    host.innerHTML = '<p class="text-secondary p-4">Loading…</p>';
+    window.forgeAPI.coachRoster(date).then(function (r) {
+      var total = r.classes.reduce(function (s, c) { return s + c.roster.length; }, 0);
+      $('#todayHeading').textContent = new Date(date).toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
+      $('#rosterSummary').textContent = r.classes.length + ' class' + (r.classes.length === 1 ? '' : 'es') + ' · ' + total + ' people booked';
+      host.innerHTML = renderRoster(date, r.classes);
+      host.querySelectorAll('[data-att]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var status    = btn.dataset.att;
+          var bookingId = parseInt(btn.dataset.booking, 10);
+          window.forgeAPI.coachAttendance({ bookingId: bookingId, status: status })
+            .then(function () {
+              var siblings = btn.parentNode.querySelectorAll('[data-att]');
+              siblings.forEach(function (s) { s.removeAttribute('data-active'); });
+              btn.setAttribute('data-active', status);
+              window.forgeToast('Marked: ' + status, 'success');
+            })
+            .catch(function () { window.forgeToast('Update failed.', 'warning'); });
+        });
+      });
+    }).catch(function (err) {
+      host.innerHTML = '<p class="text-secondary p-4">Could not load roster: ' + esc(err.message) + '</p>';
+    });
+  }
+
+  function bindScan() {
+    $('#scanForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var t = $('#scanToken').value.trim();
+      if (!t) return;
+      window.forgeAPI.coachScan({ token: t }).then(function (r) {
+        var name = (r.member?.first_name || '') + ' ' + (r.member?.last_name || '');
+        $('#scanFeedback').innerHTML = '✓ ' + esc(name.trim() || 'Member') + ' checked into ' + esc(r.program || '') + ' · ' + esc(r.time || '');
+        $('#scanFeedback').style.color = '#6BE389';
+        $('#scanToken').value = '';
+        $('#scanToken').focus();
+        loadRoster();
+      }).catch(function (err) {
+        $('#scanFeedback').textContent = '⚠ ' + ((err.data && err.data.error) || 'Scan failed.');
+        $('#scanFeedback').style.color = '#FFB4BE';
+        $('#scanToken').select();
+      });
+    });
+  }
+
+  function bind() {
+    $('#refreshBtn').addEventListener('click', loadRoster);
+    $('#datePick').addEventListener('change', loadRoster);
+    $('#logoutBtn').addEventListener('click', function () {
+      window.forgeAPI.logout().then(function () { showLogin(); window.forgeToast('Signed out.', 'success'); });
+    });
+    $('#coachLogin').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.forgeAPI.login({ email: this.email.value.trim(), password: this.password.value }).then(function (r) {
+        if (r.member && ['coach','admin'].includes(r.member.role)) showRoster(r.member);
+        else { window.forgeToast('Coach access required.', 'warning'); window.forgeAPI.logout(); }
+      }).catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Sign-in failed.', 'warning'); });
+    });
+    bindScan();
+  }
+
+  function init() {
+    if (!window.forgeAPI) { setTimeout(init, 100); return; }
+    bind();
+    window.forgeAPI.probe().then(function (ok) {
+      if (!ok) { window.forgeToast('Backend not reachable.', 'warning'); return; }
+      window.forgeAPI.me().then(function (r) {
+        if (r.member && ['coach','admin'].includes(r.member.role)) showRoster(r.member);
+        else showLogin();
+      }).catch(showLogin);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>

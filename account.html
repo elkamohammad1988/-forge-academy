@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0F12">
+
+<title>Member Portal — Forge Martial Arts Manchester</title>
+<meta name="description" content="Sign in to your Forge member portal — manage bookings, membership and account details.">
+<meta name="robots" content="noindex,nofollow">
+
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(self https://checkout.stripe.com), interest-cohort=()">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" referrerpolicy="no-referrer">
+<!-- forge-theme-bootstrap -->
+<script>(function(){try{var k='forge:theme';var s=localStorage.getItem(k);var t=s||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='dark'?'#0E0F12':'#F7F4EE');}catch(e){}})();</script>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230E0F12'/><text x='50%25' y='58%25' font-family='Anton,sans-serif' font-size='20' fill='%23C9A24B' text-anchor='middle'>F</text></svg>">
+</head>
+
+<body data-page="account">
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="nav-row">
+      <a href="index.html" class="brand"><span class="brand-mark">F</span><span>Forge<span class="brand-sub">Manchester</span></span></a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="coaches.html">Coaches</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="index.html" class="btn-forge btn-dark-forge nav-cta">← Home</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- AUTH PANEL: signed-out (default sign-in / sign-up) -->
+<section class="section section-bone app-view" data-view="auth">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-xl-8">
+        <div class="text-center mb-5" data-reveal>
+          <span class="eyebrow">Member Portal</span>
+          <h1>Sign In Or<br>Create Your Account.</h1>
+          <p class="lead text-secondary mt-3" style="max-width: 50ch; margin: 0 auto;">
+            Manage your bookings, membership plan and account details.
+          </p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="lead-wrap light">
+              <h3 class="mb-3">Sign in</h3>
+              <form id="loginForm" novalidate>
+                <div class="field-wrap mb-3">
+                  <label class="form-label-forge" for="loginEmail">Email</label>
+                  <input class="form-control-forge" id="loginEmail" name="email" type="email" required autocomplete="email">
+                  <div class="field-error"></div>
+                </div>
+                <div class="field-wrap mb-3">
+                  <label class="form-label-forge" for="loginPassword">Password</label>
+                  <input class="form-control-forge" id="loginPassword" name="password" type="password" required autocomplete="current-password">
+                  <div class="field-error"></div>
+                </div>
+                <button type="submit" class="btn-forge btn-primary-forge w-100">Sign in</button>
+                <p class="form-fineprint text-center mt-3"><a href="#" data-show="forgot" class="text-blood">Forgot password?</a></p>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="lead-wrap light">
+              <h3 class="mb-3">Create account</h3>
+              <form id="registerForm" novalidate>
+                <div class="row g-3 mb-3">
+                  <div class="col-6">
+                    <div class="field-wrap">
+                      <label class="form-label-forge" for="regFirst">First name</label>
+                      <input class="form-control-forge" id="regFirst" name="firstName" type="text" required autocomplete="given-name">
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="field-wrap">
+                      <label class="form-label-forge" for="regLast">Last name</label>
+                      <input class="form-control-forge" id="regLast" name="lastName" type="text" autocomplete="family-name">
+                    </div>
+                  </div>
+                </div>
+                <div class="field-wrap mb-3">
+                  <label class="form-label-forge" for="regEmail">Email</label>
+                  <input class="form-control-forge" id="regEmail" name="email" type="email" required autocomplete="email">
+                </div>
+                <div class="field-wrap mb-3">
+                  <label class="form-label-forge" for="regPassword">Password (min 8 characters)</label>
+                  <input class="form-control-forge" id="regPassword" name="password" type="password" required minlength="8" autocomplete="new-password">
+                </div>
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="regConsent" name="consent" required>
+                  <label class="form-check-label" for="regConsent" style="font-size:.88rem;">
+                    I accept the <a href="#" data-open-modal="modalTermsAcc" class="text-blood">terms</a> and <a href="#" data-open-modal="modalPrivacyAcc" class="text-blood">privacy policy</a>.
+                  </label>
+                </div>
+                <button type="submit" class="btn-forge btn-dark-forge w-100">Create account</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTH PANEL: forgot password -->
+<section class="section section-bone app-view" data-view="forgot" style="display:none;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="lead-wrap light">
+          <span class="eyebrow">Reset Password</span>
+          <h2>Forgot your password?</h2>
+          <p class="text-secondary">We'll email you a one-time link to set a new one. The link is valid for 60 minutes.</p>
+          <form id="forgotForm" novalidate>
+            <div class="field-wrap mb-3">
+              <label class="form-label-forge" for="forgotEmail">Email</label>
+              <input class="form-control-forge" id="forgotEmail" type="email" required autocomplete="email">
+            </div>
+            <button type="submit" class="btn-forge btn-primary-forge w-100">Send reset link</button>
+            <p class="form-fineprint text-center mt-3"><a href="#" data-show="auth" class="text-blood">← Back to sign in</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTH PANEL: complete password reset (visited from email link) -->
+<section class="section section-bone app-view" data-view="reset" style="display:none;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="lead-wrap light">
+          <span class="eyebrow">Set New Password</span>
+          <h2>Choose a new password.</h2>
+          <form id="resetForm" novalidate>
+            <input type="hidden" id="resetToken">
+            <div class="field-wrap mb-3">
+              <label class="form-label-forge" for="resetPassword">New password (min 8 characters)</label>
+              <input class="form-control-forge" id="resetPassword" type="password" required minlength="8" autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn-forge btn-primary-forge w-100">Save new password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="section section-bone app-view" data-view="dashboard" style="display:none;">
+  <div class="container">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+      <div>
+        <span class="eyebrow">Member portal</span>
+        <h1 style="margin-bottom:.25rem;" data-member-greet>Member</h1>
+        <p class="text-secondary" style="margin:0;">
+          Plan: <strong data-member-plan>—</strong> ·
+          <span class="openstatus" data-openstatus><span class="openstatus-dot"></span><span class="openstatus-text">Checking…</span></span>
+        </p>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="schedule.html" class="btn-forge btn-primary-forge">Book a class</a>
+        <button type="button" class="btn-forge btn-dark-forge" id="logoutBtn">Sign out</button>
+      </div>
+    </div>
+
+    <!-- Email verification banner -->
+    <div id="verifyBanner" class="draft-notice" style="display:none; background: rgba(201,162,75,.18); border-color: rgba(201,162,75,.45); color: #6e5417;">
+      <div>
+        <strong>Verify your email</strong> — we sent a confirmation link to your inbox. Open it to unlock everything.
+      </div>
+      <button type="button" id="resendVerifyBtn">Resend</button>
+    </div>
+
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item"><a class="nav-link active" href="#" data-tab="bookings">Bookings</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="membership">Membership</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="referrals">Refer a friend</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="notifications">Notifications</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="profile">Profile</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-tab="security">Security</a></li>
+    </ul>
+
+    <div class="row g-4">
+      <div class="col-12">
+
+        <!-- BOOKINGS TAB -->
+        <div data-tab-pane="bookings">
+          <div class="lead-wrap light">
+            <h3 class="mb-3">Your upcoming classes</h3>
+            <div id="bookingsList"><p class="text-secondary">Loading…</p></div>
+          </div>
+        </div>
+
+        <!-- MEMBERSHIP TAB -->
+        <div data-tab-pane="membership" style="display:none;">
+          <div class="lead-wrap light">
+            <h3 class="mb-3">Membership</h3>
+            <p class="text-secondary" id="planSummary">No active subscription. Pick a plan and your membership starts immediately.</p>
+            <div class="d-grid d-sm-flex gap-2 flex-wrap">
+              <a href="pricing.html" class="btn-forge btn-primary-forge">View Plans</a>
+              <button type="button" class="btn-forge btn-dark-forge" id="billingPortalBtn" style="display:none;">Manage billing →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- REFERRALS TAB -->
+        <div data-tab-pane="referrals" style="display:none;">
+          <div class="lead-wrap light">
+            <h3 class="mb-3">Refer a friend, earn a free month</h3>
+            <p class="text-secondary">When a friend signs up via your link and joins on a paid plan, we credit your account with one free month. Stackable, no cap.</p>
+            <div class="refer-link-row" style="background: var(--c-bone); padding: 1rem; border-radius: var(--radius);">
+              <input type="text" id="referLink" readonly aria-label="Your referral link" style="background:#fff; color: var(--c-ink); border: 1px solid var(--c-line);">
+              <button type="button" class="btn-forge btn-primary-forge" id="referCopyBtn">Copy</button>
+            </div>
+            <hr class="divider">
+            <div class="row g-3 text-center mb-3">
+              <div class="col-4"><div style="font-family:var(--f-display); font-size:2rem; color: var(--c-blood);" id="refBalance">0</div><div class="text-secondary" style="font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;">Free months earned</div></div>
+              <div class="col-4"><div style="font-family:var(--f-display); font-size:2rem;" id="refJoined">0</div><div class="text-secondary" style="font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;">Friends joined</div></div>
+              <div class="col-4"><div style="font-family:var(--f-display); font-size:2rem;" id="refPaid">0</div><div class="text-secondary" style="font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;">On a paid plan</div></div>
+            </div>
+            <h4 style="font-size:1rem;">Recent activity</h4>
+            <div id="refList" class="text-secondary">No referrals yet — share your link.</div>
+          </div>
+        </div>
+
+        <!-- NOTIFICATIONS TAB -->
+        <div data-tab-pane="notifications" style="display:none;">
+          <div class="lead-wrap light">
+            <h3 class="mb-3">Class reminders</h3>
+            <p class="text-secondary">Get a notification 60 minutes before each class you've booked. Your phone or computer needs to allow notifications.</p>
+            <div class="d-flex gap-2 flex-wrap mt-3">
+              <button type="button" class="btn-forge btn-primary-forge" id="pushEnableBtn">Enable push notifications</button>
+              <button type="button" class="btn-forge btn-dark-forge" id="pushTestBtn" style="display:none;">Send me a test</button>
+              <button type="button" class="btn-forge btn-ghost-forge" id="pushDisableBtn" style="display:none; color:var(--c-blood); border-color: rgba(200,16,46,.3);">Turn off</button>
+            </div>
+            <p id="pushStatus" class="text-secondary mt-3" style="font-size:.85rem;">Checking support…</p>
+          </div>
+        </div>
+
+        <!-- PROFILE TAB -->
+        <div data-tab-pane="profile" style="display:none;">
+          <div class="lead-wrap light">
+            <h3 class="mb-3">Your details</h3>
+            <form id="profileForm" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="field-wrap">
+                    <label class="form-label-forge" for="pfFirst">First name</label>
+                    <input class="form-control-forge" id="pfFirst" type="text" autocomplete="given-name">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field-wrap">
+                    <label class="form-label-forge" for="pfLast">Last name</label>
+                    <input class="form-control-forge" id="pfLast" type="text" autocomplete="family-name">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field-wrap">
+                    <label class="form-label-forge" for="pfPhone">Phone</label>
+                    <input class="form-control-forge" id="pfPhone" type="tel" autocomplete="tel">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field-wrap">
+                    <label class="form-label-forge" for="pfEmail">Email</label>
+                    <input class="form-control-forge" id="pfEmail" type="email" disabled>
+                    <div class="form-fineprint">Contact us to change your email.</div>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn-forge btn-primary-forge mt-4">Save changes</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- SECURITY TAB -->
+        <div data-tab-pane="security" style="display:none;">
+          <div class="lead-wrap light">
+            <h3 class="mb-3">Change password</h3>
+            <form id="passwordForm" novalidate>
+              <div class="field-wrap mb-3">
+                <label class="form-label-forge" for="pwCurrent">Current password</label>
+                <input class="form-control-forge" id="pwCurrent" type="password" required autocomplete="current-password">
+              </div>
+              <div class="field-wrap mb-3">
+                <label class="form-label-forge" for="pwNew">New password (min 8 characters)</label>
+                <input class="form-control-forge" id="pwNew" type="password" required minlength="8" autocomplete="new-password">
+              </div>
+              <button type="submit" class="btn-forge btn-primary-forge">Update password</button>
+            </form>
+
+            <hr class="divider">
+            <h3 class="mb-3" style="font-size:1.15rem;">Your data (GDPR)</h3>
+            <p class="text-secondary" style="font-size:.9rem;">Download everything we hold about you, or delete your account. Both are one-click.</p>
+            <div class="d-flex gap-2 flex-wrap">
+              <button type="button" class="btn-forge btn-dark-forge" id="gdprExportBtn">Download my data</button>
+              <button type="button" class="btn-forge btn-ghost-forge" id="gdprDeleteBtn" style="color: var(--c-blood); border-color: rgba(200,16,46,.3);">Delete my account</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="index.html" class="footer-brand-row">
+          <span class="brand-mark">F</span>
+          <span>Forge</span>
+        </a>
+        <p>
+          BJJ · Muay Thai · Boxing · Kids Karate · Strength &amp; Conditioning.
+        </p>
+        <div class="footer-social" aria-label="Follow us">
+          <a href="https://www.instagram.com/forgemartialartsmanchester" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.55" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.facebook.com/forgemartialartsmanchester" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@forgemartialartsmanchester" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@forgemartialarts" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html#why">Why Forge</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="coaches.html">Coaches</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="account.html">Member Portal</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Programs</h4>
+        <ul>
+          <li><a href="programs/bjj.html">Brazilian Jiu-Jitsu</a></li>
+          <li><a href="programs/muay-thai.html">Muay Thai</a></li>
+          <li><a href="programs/boxing.html">Boxing</a></li>
+          <li><a href="programs/kids.html">Kids Karate</a></li>
+          <li><a href="index.html#first-class">First Class Playbook</a></li>
+          <li><a href="index.html#forge-path">The Forge Path</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-newsletter">
+        <h4>Newsletter</h4>
+        <p>Monthly drills, fight nights and member offers — straight to your inbox. No spam, ever.</p>
+        <form class="footer-newsletter-form" data-forge-form data-form-id="newsletter" data-redirect="thank-you.html" novalidate>
+          <input type="email" name="email" placeholder="you@example.com" required aria-label="Email address">
+          <button type="submit">Subscribe</button>
+        </form>
+        <p class="footer-newsletter-fineprint">Drop us a line: <a href="mailto:hello@forgemartialarts.co.uk" style="color: var(--c-gold);">hello@forgemartialarts.co.uk</a> · <a href="tel:+441612000000" style="color: var(--c-gold);">0161 200 0000</a></p>
+      </div>
+
+    </div>
+
+    <div class="row g-4 align-items-center" style="border-top: 1px solid rgba(247,244,238,.08); padding-top: 2rem;">
+      <div class="col-md-4">
+        <h4 style="color: var(--c-bone); font-family: var(--f-body); font-weight: 800; font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; margin: 0 0 .6rem;">Visit</h4>
+        <p style="color: rgba(247,244,238,.7); margin: 0; font-size: .92rem; line-height: 1.55;">
+          Unit 4, Dale Street<br>
+          Manchester M1 1JW · United Kingdom
+        </p>
+      </div>
+      <div class="col-md-4">
+        <h4 style="color: var(--c-bone); font-family: var(--f-body); font-weight: 800; font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; margin: 0 0 .6rem;">Hours</h4>
+        <p style="color: rgba(247,244,238,.7); margin: 0; font-size: .92rem; line-height: 1.55;">
+          Mon–Fri: 6:00am – 9:30pm · Sat: 9–4 · Sun: 10–1
+        </p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a class="mcr-badge" href="contact.html#map" aria-label="Find us in Manchester">
+          <svg class="bee-mark" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2c1.4 0 2.6.9 3 2.2-.4.2-.7.5-1 .8H10c-.3-.3-.6-.6-1-.8C9.4 2.9 10.6 2 12 2zm-3.5 4h7c.8 0 1.5.4 2 1l1.7-1c.5-.3 1.1.4.7.8l-1.5 1.4c.4.5.6 1.1.6 1.8 0 .3-.1.7-.2 1l1.6.8c.5.3.2 1-.3.9l-1.9-.4c-.3.5-.7.9-1.2 1.2l.5 1.7c.1.5-.5.9-.8.5l-1.2-1.4c-.6.3-1.3.4-2 .4h-3c-.7 0-1.4-.1-2-.4l-1.2 1.4c-.3.4-.9 0-.8-.5l.5-1.7c-.5-.3-.9-.7-1.2-1.2l-1.9.4c-.5.1-.8-.6-.3-.9l1.6-.8c-.1-.3-.2-.7-.2-1 0-.7.2-1.3.6-1.8L4.1 6.8C3.7 6.4 4.3 5.7 4.8 6l1.7 1c.5-.6 1.2-1 2-1zm.5 4v2h6v-2H9zm0 3v2h6v-2H9zm3 5c-1 0-2 .8-2 1.8 0 1.2 1.7 2.2 2 2.2.3 0 2-1 2-2.2 0-1-1-1.8-2-1.8z"/>
+          </svg>
+          Mancunian since 2014
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Forge Martial Arts Academy Ltd. All rights reserved.</span>
+      <div class="footer-bottom-legal">
+        <a href="#" data-open-modal="modalPrivacy">Privacy</a>
+        <a href="#" data-open-modal="modalTerms">Terms</a>
+        <a href="#" data-open-modal="modalCookies">Cookies</a>
+        <a href="#" data-cookie-reopen>Cookie Settings</a>
+        <a href="#" data-lang="en">EN</a>
+        <a href="#" data-lang="ar">ع</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top" type="button">↑</button>
+<div class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+<div class="fmodal" id="modalPrivacyAcc" role="dialog" aria-modal="true">
+  <div class="fmodal-panel">
+    <button class="fmodal-close" aria-label="Close" type="button">×</button>
+    <h3>Privacy Policy</h3>
+    <p>We store your account details (email, name, hashed password) on UK/EU servers, use them only to deliver your membership, and never share them with third parties beyond payment processing (Stripe).</p>
+  </div>
+</div>
+<div class="fmodal" id="modalTermsAcc" role="dialog" aria-modal="true">
+  <div class="fmodal-panel">
+    <button class="fmodal-close" aria-label="Close" type="button">×</button>
+    <h3>Terms of Service</h3>
+    <p>Membership is rolling monthly, cancel any time. Training carries inherent risk; you confirm you have no medical conditions that would make training unsafe without disclosing them to a coach. Full T&amp;Cs available on request.</p>
+  </div>
+</div>
+
+<script src="js/i18n.js" defer></script>
+<script src="js/api.js" defer></script>
+<script src="js/app.js" defer></script>
+<script src="js/push.js" defer></script>
+<script>
+(function () {
+  function $(s){ return document.querySelector(s); }
+  function show(view) {
+    document.querySelectorAll('[data-view]').forEach(function (el) { el.style.display = 'none'; });
+    var t = document.querySelector('[data-view="' + view + '"]');
+    if (t) t.style.display = '';
+  }
+  function showTab(name) {
+    document.querySelectorAll('[data-tab]').forEach(function (a) { a.classList.toggle('active', a.dataset.tab === name); });
+    document.querySelectorAll('[data-tab-pane]').forEach(function (p) { p.style.display = p.dataset.tabPane === name ? '' : 'none'; });
+  }
+
+  function showSignedIn(member) {
+    show('dashboard');
+    $('[data-member-greet]').textContent = 'Welcome back, ' + (member.firstName || member.email) + '.';
+    $('[data-member-plan]').textContent  = member.plan
+      ? member.plan.charAt(0).toUpperCase() + member.plan.slice(1)
+      : 'No plan yet';
+    $('#pfFirst').value = member.firstName || '';
+    $('#pfLast').value  = member.lastName  || '';
+    $('#pfPhone').value = member.phone     || '';
+    $('#pfEmail').value = member.email;
+    $('#verifyBanner').style.display = member.emailVerified ? 'none' : 'flex';
+    if (member.plan) {
+      $('#planSummary').textContent = 'You are on the ' + member.plan + ' plan. Use Manage billing to update payment, change plan, or cancel.';
+      $('#billingPortalBtn').style.display = '';
+    } else {
+      $('#planSummary').textContent = 'No active subscription. Pick a plan to get started.';
+      $('#billingPortalBtn').style.display = 'none';
+    }
+    loadBookings();
+    loadReferrals();
+    initPush();
+  }
+
+  function loadReferrals() {
+    if (!window.forgeAPI || !window.forgeAPI.myReferrals) return;
+    window.forgeAPI.myReferrals().then(function (r) {
+      var link = $('#referLink'); if (link) link.value = r.link || '';
+      $('#refBalance').textContent = r.balance_months || 0;
+      $('#refJoined').textContent  = (r.referrals || []).length;
+      $('#refPaid').textContent    = (r.referrals || []).filter(function (x) { return x.status === 'paid' || x.status === 'rewarded'; }).length;
+      var list = $('#refList');
+      if (!r.referrals || !r.referrals.length) { list.innerHTML = '<p class="text-secondary mb-0">No referrals yet — share your link!</p>'; return; }
+      list.innerHTML = '<ul class="list-unstyled mb-0">' + r.referrals.map(function (x) {
+        var pill = ({ pending:'pill-new', joined:'pill-contacted', paid:'pill-booked', rewarded:'pill-booked' })[x.status] || 'pill-closed';
+        return '<li class="d-flex justify-content-between border-bottom py-2"><span>' + x.referred_email + '</span><span class="pill ' + pill + '" style="display:inline-block;padding:.15rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700;">' + x.status + '</span></li>';
+      }).join('') + '</ul>';
+    }).catch(function () {});
+  }
+
+  function initPush() {
+    var status = $('#pushStatus');
+    var enableBtn = $('#pushEnableBtn');
+    var testBtn   = $('#pushTestBtn');
+    var offBtn    = $('#pushDisableBtn');
+    if (!window.forgePush || !window.forgePush.isSupported()) {
+      status.textContent = 'Push notifications aren\'t supported on this browser.';
+      enableBtn.disabled = true; return;
+    }
+    window.forgePush.isSubscribed().then(function (sub) {
+      if (sub) {
+        status.textContent = 'You\'re subscribed. Reminders fire 60 minutes before each booked class.';
+        enableBtn.style.display = 'none';
+        testBtn.style.display = ''; offBtn.style.display = '';
+      } else {
+        status.textContent = 'Tap Enable to get reminded an hour before each class you book.';
+      }
+    });
+    enableBtn.addEventListener('click', function () {
+      window.forgePush.subscribe()
+        .then(function () { window.forgeToast('Notifications enabled.', 'success'); initPush(); })
+        .catch(function (err) { window.forgeToast(err.message || 'Could not enable notifications.', 'warning'); });
+    });
+    testBtn.addEventListener('click', function () {
+      window.forgeAPI.pushTest().then(function () { window.forgeToast('Test sent — check your notifications.', 'success'); });
+    });
+    offBtn.addEventListener('click', function () {
+      window.forgePush.unsubscribe().then(function () { window.forgeToast('Notifications disabled.', 'success'); initPush(); });
+    });
+  }
+
+  // The API stores short program codes; members should read real class names.
+  var PROGRAM_LABELS = {
+    BJJ: 'Brazilian Jiu-Jitsu',
+    MuayThai: 'Muay Thai',
+    Boxing: 'Boxing',
+    Kids: 'Kids Karate'
+  };
+  function progLabel(code) { return PROGRAM_LABELS[code] || code; }
+
+  function loadBookings() {
+    var box = document.getElementById('bookingsList');
+    if (!window.forgeAPI || !window.forgeAPI.bookings) {
+      box.innerHTML = '<p class="text-secondary">Bookings will appear here once your backend is live.</p>'; return;
+    }
+    window.forgeAPI.bookings().then(function (r) {
+      if (!r.bookings || !r.bookings.length) {
+        box.innerHTML = '<div class="app-empty"><strong>Nothing booked yet.</strong>' +
+          'Classes you book show up here, with the option to cancel up to two hours before. ' +
+          '<a href="schedule.html" class="text-blood fw-bold">Browse the timetable →</a></div>';
+        return;
+      }
+      box.innerHTML = '<ul class="list-unstyled mb-0 booking-list">' + r.bookings.map(function (b) {
+        var when  = new Date(b.starts_at).toLocaleString('en-GB', { weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+        var label = b.status === 'waitlist'
+          ? '<span class="pill pill-contacted" style="display:inline-block; padding:.15rem .5rem; border-radius:999px; font-size:.7rem; font-weight:700;">Waitlist · #' + (b.waitlist_position || '?') + '</span>'
+          : '';
+        return '<li class="booking-row">' +
+          '<div><strong>' + progLabel(b.program) + '</strong> ' + label + '<br><span class="text-secondary">' + when + '</span></div>' +
+          '<button type="button" class="btn-quiet-danger" data-cancel="' + b.id + '">Cancel</button>' +
+          '</li>';
+      }).join('') + '</ul>';
+      box.querySelectorAll('[data-cancel]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (!confirm('Cancel this class?')) return;
+          window.forgeAPI.cancelBooking(btn.getAttribute('data-cancel')).then(loadBookings);
+        });
+      });
+    }).catch(function () {
+      box.innerHTML = '<p class="text-secondary">Could not load bookings.</p>';
+    });
+  }
+
+  function bind() {
+    document.querySelectorAll('[data-show]').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); show(a.dataset.show); });
+    });
+    document.querySelectorAll('[data-tab]').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); showTab(a.dataset.tab); });
+    });
+
+    $('#loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.forgeAPI.login({ email: this.email.value.trim(), password: this.password.value })
+        .then(function (r) { window.forgeToast('Welcome back!', 'success'); showSignedIn(r.member); })
+        .catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Sign-in failed.', 'warning'); });
+    });
+    $('#registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.forgeAPI.register({
+        firstName: this.firstName.value.trim(), lastName: this.lastName.value.trim(),
+        email: this.email.value.trim(), password: this.password.value, consent: this.consent.checked,
+      }).then(function (r) {
+        window.forgeToast('Account created — check your inbox to verify.', 'success');
+        showSignedIn(Object.assign({ emailVerified: false }, r.member));
+      }).catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Registration failed.', 'warning'); });
+    });
+    $('#forgotForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.forgeAPI.forgot($('#forgotEmail').value.trim()).then(function () {
+        window.forgeToast('If that email exists, a reset link is on its way.', 'success');
+        show('auth');
+      }).catch(function () { window.forgeToast('Could not send the link. Try again.', 'warning'); });
+    });
+    $('#resetForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.forgeAPI.reset({ token: $('#resetToken').value, password: $('#resetPassword').value })
+        .then(function () { window.forgeToast('Password updated — please sign in.', 'success'); show('auth'); })
+        .catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Reset failed.', 'warning'); });
+    });
+    $('#profileForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.forgeAPI.updateProfile({
+        firstName: $('#pfFirst').value.trim(), lastName: $('#pfLast').value.trim(), phone: $('#pfPhone').value.trim(),
+      }).then(function () { window.forgeToast('Profile saved.', 'success'); })
+        .catch(function () { window.forgeToast('Could not save profile.', 'warning'); });
+    });
+    $('#passwordForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.forgeAPI.changePassword({ currentPassword: $('#pwCurrent').value, newPassword: $('#pwNew').value })
+        .then(function () { window.forgeToast('Password changed.', 'success'); $('#passwordForm').reset(); })
+        .catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Could not change password.', 'warning'); });
+    });
+    $('#resendVerifyBtn').addEventListener('click', function () {
+      window.forgeAPI.resendVerify().then(function () { window.forgeToast('Verification email sent.', 'success'); });
+    });
+    $('#billingPortalBtn').addEventListener('click', function () {
+      window.forgeAPI.billingPortal().then(function (r) { if (r.url) window.location.href = r.url; })
+        .catch(function (err) { window.forgeToast((err.data && err.data.error) || 'Billing portal unavailable.', 'warning'); });
+    });
+    $('#logoutBtn').addEventListener('click', function () {
+      window.forgeAPI.logout().then(function () { show('auth'); window.forgeToast('Signed out.', 'success'); });
+    });
+    $('#gdprExportBtn').addEventListener('click', function () {
+      window.forgeAPI.exportMyData().then(function (blob) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'forge-my-data-' + Date.now() + '.json';
+        document.body.appendChild(a); a.click();
+        setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 200);
+        window.forgeToast('Your data was downloaded.', 'success');
+      }).catch(function () { window.forgeToast('Export failed.', 'warning'); });
+    });
+    var refCopy = $('#referCopyBtn');
+    if (refCopy) refCopy.addEventListener('click', function () {
+      var v = $('#referLink').value;
+      if (!v) return;
+      navigator.clipboard.writeText(v).then(function () { window.forgeToast('Link copied!', 'success'); })
+        .catch(function () { $('#referLink').select(); document.execCommand('copy'); window.forgeToast('Link copied!', 'success'); });
+    });
+    $('#gdprDeleteBtn').addEventListener('click', function () {
+      if (!confirm('Permanently delete your account?\n\nThis anonymises all your personal data and signs you out. Booking history is kept (anonymised) for the gym\'s records. This cannot be undone.')) return;
+      if (!confirm('Last chance — really delete?')) return;
+      window.forgeAPI.deleteAccount().then(function () {
+        window.forgeToast('Your account has been deleted. Sorry to see you go.', 'success');
+        setTimeout(function () { location.href = 'index.html'; }, 1200);
+      });
+    });
+  }
+
+  function handleQueryFlows() {
+    var p = new URLSearchParams(location.search);
+    if (p.get('reset'))  { $('#resetToken').value = p.get('reset'); show('reset');  return true; }
+    if (p.get('verify')) {
+      window.forgeAPI.verifyEmail(p.get('verify')).then(function () {
+        window.forgeToast('Email verified — welcome aboard!', 'success');
+        history.replaceState({}, '', 'account.html');
+      }).catch(function () {
+        window.forgeToast('Verification link expired or invalid.', 'warning');
+      });
+    }
+    return false;
+  }
+
+  function init() {
+    if (!window.forgeAPI) { setTimeout(init, 100); return; }
+    bind();
+    window.forgeAPI.probe().then(function (ok) {
+      if (!ok) { window.forgeToast('Backend not reachable — sign-in disabled.', 'warning'); return; }
+      if (handleQueryFlows()) return;
+      window.forgeAPI.me().then(function (r) {
+        if (r.member) showSignedIn(r.member);
+        else show('auth');
+      }).catch(function () { show('auth'); });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+# Backend / server code (never deploy as static)
+server.js
+src/
+scripts/
+tests/
+
+# Container / VPS configs
+Dockerfile
+docker-compose.yml
+Caddyfile
+.dockerignore
+
+# Tooling configs
+eslint.config.js
+vitest.config.js
+
+# Documentation (not for public portfolio)
+API.md
+BUILD.md
+CHANGELOG.md
+CONTRIBUTING.md
+DEPLOYMENT.md
+DEPLOY_CHECKLIST.md
+README.md
+LICENSE.md
+
+# Local-only artifacts
+.env
+.env.local
+.env.example
+.brand-applied.json
+backups/
+data/
+dist/
+coverage/
+screenshots/
+.playwright/
+playwright-report/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Build inputs (Vercel will just serve static; no build step)
+package.json
+package-lock.json
+node_modules/
+
+# Caddy / Apache files (irrelevant on Vercel)
+_headers
+.htaccess

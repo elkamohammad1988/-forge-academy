@@ -1,0 +1,35 @@
+{
+  "$schema": "Visual identity. Edit colours/fonts here, run `npm run brand:apply` to regenerate the CSS tokens.",
+
+  "colors": {
+    "ink":        "#0E0F12",
+    "inkSoft":    "#1A1C21",
+    "charcoal":   "#2A2D34",
+    "bone":       "#F7F4EE",
+    "paper":      "#FFFFFF",
+    "mute":       "#6C707A",
+    "line":       "#E6E2D8",
+
+    "blood":      "#DA291C",
+    "bloodDark":  "#A81F15",
+    "gold":       "#C9A24B",
+    "goldSoft":   "#E8D8A6",
+
+    "$mancunian":  "Manchester accents — sky (City), bee (worker-bee civic mark), brick (cottonopolis)",
+    "sky":        "#6CABDD",
+    "skyDark":    "#3F7CB0",
+    "bee":        "#FFC72C",
+    "brick":      "#8B3A2F"
+  },
+
+  "fonts": {
+    "display":     "'Anton', 'Arial Narrow', sans-serif",
+    "body":        "'Manrope', system-ui, -apple-system, sans-serif",
+    "googleFonts": "Anton&family=Manrope:wght@400;500;600;700;800"
+  },
+
+  "radius": {
+    "sm":   "8px",
+    "base": "14px"
+  }
+}
