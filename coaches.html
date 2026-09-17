@@ -112,7 +112,7 @@
     <a href="coaches.html">Coaches</a>
     <a href="contact.html">Contact</a>
     <a href="booking.html" class="btn-forge btn-primary-forge drawer-cta">Book Free Trial</a>
-    <a href="tel:+441612000000" class="drawer-contact">📞 0161 200 0000</a>
+    <a href="tel:+441612000000" class="drawer-contact"><svg class="fi-svg fi-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.4 3h3.1l1.6 4-2.1 1.5a12.3 12.3 0 0 0 5.7 5.7l1.5-2.1 4 1.6v3.1a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.4 5.2 2 2 0 0 1 6.4 3Z"/></svg>0161 200 0000</a>
   </div>
 </div>
 
@@ -223,7 +223,7 @@
       <div class="col-md-4" data-reveal>
         <div class="feature-card">
           <span class="feature-num">01</span>
-          <div class="feature-icon">🛡️</div>
+          <div class="feature-icon"><svg class="fi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.8 4.6 5.7v5.6c0 4.4 3.1 7.8 7.4 9.9 4.3-2.1 7.4-5.5 7.4-9.9V5.7L12 2.8Z"/></svg></div>
           <h3>Safety Before Skill</h3>
           <p>We slow drills down before we speed them up. No live sparring in beginner classes. Coaches enforce — friendlies don't count.</p>
         </div>
@@ -231,7 +231,7 @@
       <div class="col-md-4" data-reveal>
         <div class="feature-card">
           <span class="feature-num">02</span>
-          <div class="feature-icon">🤝</div>
+          <div class="feature-icon"><svg class="fi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="9.2" cy="7.8" r="3.3"/><path d="M2.8 20a6.4 6.4 0 0 1 12.8 0"/><path d="M16.6 5.1a3.3 3.3 0 0 1 0 6.2"/><path d="M17.9 13.9A6.4 6.4 0 0 1 21.2 20"/></svg></div>
           <h3>Zero Ego, Always</h3>
           <p>If you smash a beginner you don't train here. Simple. The mat is for learning, not proving.</p>
         </div>
@@ -239,7 +239,7 @@
       <div class="col-md-4" data-reveal>
         <div class="feature-card">
           <span class="feature-num">03</span>
-          <div class="feature-icon">📈</div>
+          <div class="feature-icon"><svg class="fi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 20.4h18"/><path d="M6 16.2l4.2-4.8 3.4 3L20 6.6"/><path d="M15.4 6.6H20v4.6"/></svg></div>
           <h3>Progress Is Personal</h3>
           <p>Your only competition is yesterday-you. We track skill milestones, not stripes — and we tell you when you're ready, not the other way round.</p>
         </div>
@@ -427,11 +427,23 @@
       var avatar = card.querySelector('.coach-avatar');
       if (!avatar) return;
       var initials = avatar.textContent.trim();
-      avatar.style.background = 'transparent';
       avatar.style.padding = '0';
       avatar.style.overflow = 'hidden';
-      avatar.innerHTML = '<img src="' + url + '" alt="' + initials +
-        '" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;">';
+      avatar.classList.add('coach-avatar-photo');
+      // Sizing lives in the stylesheet — the frame is an aspect-ratio box,
+      // so an inline `height:100%` here would resolve against `auto` and
+      // let the photo overflow instead of being cropped by object-fit.
+      var img = document.createElement('img');
+      img.src = url;
+      img.alt = initials;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.onerror = function () {
+        var span = document.createElement('span');
+        span.textContent = initials;
+        img.replaceWith(span);
+      };
+      avatar.replaceChildren(img);
     });
   }
   document.addEventListener('DOMContentLoaded', init);

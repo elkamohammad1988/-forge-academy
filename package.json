@@ -1,7 +1,7 @@
 {
   "name": "forge-academy",
   "version": "1.0.0",
-  "description": "Forge Martial Arts Academy — production website with API, member portal, admin & Stripe checkout.",
+  "description": "Forge Martial Arts Academy \u2014 production website with API, member portal, admin & Stripe checkout.",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -9,14 +9,14 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
+    "start": "node init && node server.js",
+    "dev": "node init && node --watch server.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint \"src/**/*.js\" \"js/**/*.js\" \"server.js\" \"tests/**/*.js\"",
-    "build:js": "esbuild js/app.js js/api.js --minify --bundle=false --outdir=dist/js --target=es2020 --legal-comments=none",
-    "build:css": "lightningcss --minify --bundle css/styles.css -o dist/css/styles.css",
-    "build": "npm run build:js && npm run build:css && node scripts/blog-build.js && node scripts/build-html.js",
+    "build:js": "node init && esbuild js/app.js js/api.js --minify --bundle=false --outdir=dist/js --target=es2020 --legal-comments=none",
+    "build:css": "node init && lightningcss --minify --bundle css/styles.css -o dist/css/styles.css",
+    "build": "node init && npm run build:js && npm run build:css && node scripts/blog-build.js && node scripts/build-html.js",
     "blog:build": "node scripts/blog-build.js",
     "brand:apply": "node scripts/brand-apply.js",
     "brand:check": "node scripts/brand-apply.js --dry-run",

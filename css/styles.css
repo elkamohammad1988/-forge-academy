@@ -41,12 +41,36 @@
   --r-6: 4rem;
   --r-7: 6rem;
 
-  /* Effects */
-  --shadow-sm: 0 1px 2px rgba(14,15,18,.06), 0 2px 8px rgba(14,15,18,.04);
-  --shadow-md: 0 8px 24px rgba(14,15,18,.08), 0 2px 6px rgba(14,15,18,.05);
-  --shadow-lg: 0 24px 60px rgba(14,15,18,.18);
+  /* ─── Surfaces ─────────────────────────────────────────────────
+     Cards sit on bone or paper. Two hairlines: `line` separates
+     surfaces, `line-soft` divides content *inside* one surface, so
+     a card's internal rules never compete with its own border. */
+  --c-line-soft:  #EFEBE1;
+
+  /* ─── State ────────────────────────────────────────────────────
+     Desaturated against the bone background so a "spaces left" meter
+     never out-shouts the red CTA next to it. Error reuses brand red —
+     the gym only ever has one red. */
+  --c-success:    #3D7A52;
+  --c-warning:    #B07A1F;
+  --c-error:      var(--c-blood);
+
+  --c-ink-08:     rgba(14,15,18,.08);
+  --c-bone-12:    rgba(247,244,238,.12);
+  --c-bone-70:    rgba(247,244,238,.7);
+
+  /* Effects
+     Layered, short-offset shadows: a tight contact shadow carries the
+     edge, a wider one carries the lift. One big blur alone reads as a
+     glow, not as depth. */
+  --shadow-xs: 0 1px 1px rgba(14,15,18,.04), 0 1px 3px rgba(14,15,18,.05);
+  --shadow-sm: 0 1px 2px rgba(14,15,18,.05), 0 3px 8px rgba(14,15,18,.05);
+  --shadow-md: 0 1px 2px rgba(14,15,18,.05), 0 6px 16px rgba(14,15,18,.07), 0 14px 32px rgba(14,15,18,.05);
+  --shadow-lg: 0 2px 4px rgba(14,15,18,.06), 0 12px 28px rgba(14,15,18,.1), 0 32px 64px rgba(14,15,18,.12);
   --radius:    14px;
   --radius-sm: 8px;
+  --radius-xs: 5px;
+  --radius-pill: 999px;
   --t-fast: 180ms cubic-bezier(.2,.7,.2,1);
   --t-med:  320ms cubic-bezier(.2,.7,.2,1);
 }
@@ -1348,10 +1372,14 @@ button:focus-visible,
   margin-bottom: .9rem;
 }
 .schedule-rows { display: flex; flex-direction: column; gap: .6rem; }
+/* time | class | capacity | action. The capacity meter used to sit under
+   the title, which left ~800px of empty row between the class name and the
+   Book button. Given its own right-hand column it reads as the answer to
+   "can I still get in?" — right where the decision is made. */
 .schedule-row {
   display: grid;
-  grid-template-columns: 110px 1fr auto;
-  gap: 1rem;
+  grid-template-columns: 96px minmax(0, 1fr) auto auto;
+  gap: 1rem 1.5rem;
   align-items: center;
   background: #fff;
   border: 1px solid var(--c-line);
@@ -1400,8 +1428,39 @@ button:focus-visible,
   color: var(--c-mute);
 }
 
+.srow-cap { justify-self: end; }
+.srow-cap .cap-bar {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .4rem;
+  font-size: .68rem;
+  letter-spacing: .14em;
+}
+.srow-cap .cap-bar-track { width: 108px; }
+
+/* Below lg the capacity column would squeeze the title, so it folds back
+   under the class name as a single inline row. */
+@media (max-width: 991.98px) {
+  .schedule-row {
+    grid-template-columns: 96px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "time body cta"
+      "time cap  cap";
+    gap: .5rem 1rem;
+    align-items: start;
+  }
+  .srow-time { grid-area: time; padding-top: .15rem; }
+  .srow-body { grid-area: body; }
+  .srow-cap  { grid-area: cap; justify-self: start; }
+  .srow-cta  { grid-area: cta; align-self: center; }
+  .srow-cap .cap-bar { flex-direction: row; align-items: center; gap: .55rem; }
+}
 @media (max-width: 575.98px) {
-  .schedule-row { grid-template-columns: 1fr; gap: .5rem; }
+  .schedule-row {
+    grid-template-columns: 1fr;
+    grid-template-areas: "time" "body" "cap" "cta";
+    gap: .5rem;
+  }
   .srow-cta { justify-self: flex-start; }
 }
 
@@ -2094,14 +2153,14 @@ a.testimonial:hover { color: inherit; border-color: var(--c-ink); transform: tra
 .cap-bar-fill {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #2EA043, #C9A24B);
+  background: var(--c-success);
   border-radius: 3px;
   transition: width .4s ease;
 }
-.cap-bar-fill.full   { background: var(--c-blood); }
-.cap-bar-fill.tight  { background: linear-gradient(90deg, #C9A24B, var(--c-blood)); }
-.cap-label-tight { color: #b07a1f; }
-.cap-label-full  { color: var(--c-blood); }
+.cap-bar-fill.full   { background: var(--c-error); }
+.cap-bar-fill.tight  { background: var(--c-warning); }
+.cap-label-tight { color: var(--c-warning); }
+.cap-label-full  { color: var(--c-error); }
 
 /* =====================================================
    45. INTERACTIVE MAP (Leaflet container)
@@ -4013,3 +4072,641 @@ html, body, .site-header, .feature-card, .testimonial, .nextclass-banner,
   .row.g-5,
   .row.gx-5 { --bs-gutter-x: 1.5rem; }
 }
+
+/* =====================================================
+   50. DESIGN REFINEMENT LAYER
+   ---------------------------------------------------
+   Additive polish over the component sections above.
+   Kept in one block so it can be read — and reverted —
+   as a single design pass.
+   ===================================================== */
+
+/* ---------- 50.1 Icon system ----------
+   Monoline SVG on a 24px grid replaces the colour emoji that used to
+   sit in these chips. Emoji render differently on every OS and drag
+   their own palette into a page built on ink/blood/gold; a stroked
+   glyph inherits currentColor and stays on-brand everywhere. */
+.fi-svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  stroke: currentColor;
+}
+.fi-inline {
+  width: 1.05em;
+  height: 1.05em;
+  display: inline-block;
+  vertical-align: -.16em;
+  margin-right: .5em;
+  flex-shrink: 0;
+  stroke: currentColor;
+}
+.btn-forge > .fi-inline { margin-right: 0; }
+
+/* The chip itself: ink tile, gold glyph, hairline so it still reads as
+   an object on a dark card. Red on hover ties it to the card's CTA. */
+.feature-icon,
+.play-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: var(--c-ink);
+  color: var(--c-gold);
+  border-radius: 11px;
+  box-shadow: inset 0 0 0 1px rgba(247,244,238,.1), var(--shadow-xs);
+  transition: background var(--t-med), color var(--t-med), transform var(--t-med);
+}
+.feature-icon { margin-bottom: var(--r-3); font-size: inherit; }
+.play-icon    { margin-bottom: .7rem; filter: none; }
+
+.feature-card:hover .feature-icon,
+.play-card:hover .play-icon {
+  background: var(--c-blood);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* ---------- 50.2 Cards: depth by role, not by default ----------
+   Resting cards are flat and bordered; the lift only happens on
+   intent. A shadow that is always on is decoration, not depth. */
+.feature-card,
+.play-card,
+.testimonial,
+.ty-step,
+.coach-card {
+  box-shadow: var(--shadow-xs);
+}
+.feature-card:hover,
+.play-card:hover,
+.coach-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Internal rules inside a bordered card use the softer hairline so the
+   card's own edge stays the strongest line in the composition. */
+.tier-feats li,
+.play-promise { border-color: var(--c-line-soft); }
+
+/* The playbook's left accent read as a stray orange smear at rest —
+   a compressed two-stop gradient. Solid at rest, gradient on hover. */
+.play-card::before {
+  background: var(--c-blood);
+  transform: scaleY(.28);
+}
+.play-card:hover::before {
+  background: linear-gradient(180deg, var(--c-blood), var(--c-gold));
+}
+
+/* ---------- 50.3 Buttons: full state set ---------- */
+.btn-forge:focus-visible {
+  outline: 2px solid var(--c-ink);
+  outline-offset: 3px;
+}
+.section-dark .btn-forge:focus-visible,
+.hero .btn-forge:focus-visible,
+.final-cta .btn-forge:focus-visible,
+.site-footer .btn-forge:focus-visible { outline-color: var(--c-gold); }
+
+.btn-forge:active { transform: translateY(1px); }
+.btn-primary-forge:active { box-shadow: 0 1px 2px rgba(14,15,18,.2); }
+
+.btn-forge[disabled],
+.btn-forge[aria-disabled="true"] {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* Ghost buttons sitting on an ink surface were near-invisible — the
+   border was 15% bone on a 6% bone card. Lift the border, and give the
+   hover somewhere to go. */
+.section-dark .btn-ghost-forge,
+.lead-wrap .btn-ghost-forge,
+.tier-featured .btn-ghost-forge {
+  border-color: rgba(247,244,238,.38);
+  background: rgba(247,244,238,.04);
+}
+.section-dark .btn-ghost-forge:hover,
+.lead-wrap .btn-ghost-forge:hover,
+.tier-featured .btn-ghost-forge:hover {
+  border-color: var(--c-gold);
+  color: var(--c-gold);
+  background: rgba(201,162,75,.1);
+}
+
+/* ---------- 50.4 Trial panel ----------
+   `.lead-wrap` is ink on an ink section, so the card was invisible and
+   its red corner glow rendered as a floating rectangle. Give the panel
+   a real surface and let the glow bleed off two edges instead of one. */
+.section-dark .lead-wrap {
+  background: var(--c-ink-soft);
+  border: 1px solid var(--c-bone-12);
+  box-shadow: var(--shadow-lg);
+}
+.lead-wrap::before {
+  width: 420px;
+  height: 420px;
+  top: -210px;
+  right: -140px;
+  background: radial-gradient(circle, rgba(218,41,28,.3) 0%, rgba(218,41,28,.08) 45%, transparent 72%);
+}
+
+/* ---------- 50.5 Navigation ----------
+   The link underline grows from the centre on hover and is pinned for
+   the current page, so "where am I" and "where can I go" look different. */
+.nav-links a {
+  position: relative;
+  padding-block: .35rem;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: var(--c-blood);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--t-fast);
+}
+.nav-links a:hover::after,
+.nav-links a[aria-current="page"]::after { transform: scaleX(1); }
+
+.brand-mark { transition: transform var(--t-med); }
+.brand:hover .brand-mark { transform: rotate(-6deg); }
+
+/* ---------- 50.6 Footer ----------
+   "hello@… · 0161 200 0000" wrapped mid-number, leaving a stranded
+   "0000" on its own line. Each contact detail stays whole and the
+   line breaks between them instead. */
+.footer-newsletter-fineprint a { white-space: nowrap; }
+
+/* ---------- 50.7 Reduced motion ----------
+   The global rule above kills durations; these also need their
+   *end* state, or a hover-grown underline never appears at all. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .feature-card:hover,
+  .play-card:hover,
+  .coach-card:hover,
+  .program-card:hover { transform: none; }
+}
+
+/* ---------- 50.8 Playbook card head ----------
+   The time badge and the icon chip were two dark pills stacked on top
+   of each other — same weight, same shape, no hierarchy. The time is
+   the point of this section, so it becomes a typographic marker in the
+   site's eyebrow language and the chip stays the only solid object. */
+.play-time {
+  background: none;
+  color: var(--c-blood);
+  padding: 0;
+  border-radius: 0;
+  font-size: .95rem;
+  letter-spacing: .12em;
+  margin-bottom: .9rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.play-time::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+:root[data-theme="dark"] .play-time { color: var(--c-gold); }
+
+/* ---------- 50.9 Feature-card grid: rank, don't repeat ----------
+   Six identical white rectangles read as a spreadsheet. The first card
+   of a grid takes the ink treatment so the eye has an entry point and
+   the row has a front — everything after it is the supporting rank. */
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--c-paper);
+}
+.feature-card > p { flex-grow: 1; }
+
+.feature-card-lead {
+  background: var(--c-ink);
+  border-color: var(--c-ink);
+  color: var(--c-bone);
+}
+.feature-card-lead h3 { color: var(--c-bone); }
+.feature-card-lead p  { color: var(--c-bone-70); }
+.feature-card-lead .feature-num {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(247,244,238,.22);
+}
+.feature-card-lead:hover {
+  border-color: var(--c-gold);
+  box-shadow: var(--shadow-lg);
+}
+.feature-card-lead:hover .feature-num { color: var(--c-gold); -webkit-text-stroke: 0; }
+.feature-card-lead .feature-icon {
+  background: rgba(247,244,238,.08);
+  box-shadow: inset 0 0 0 1px rgba(247,244,238,.16);
+}
+.feature-card-lead:hover .feature-icon { background: var(--c-blood); color: #fff; }
+.feature-card-lead .feature-cta { color: var(--c-gold); }
+:root[data-theme="dark"] .feature-card-lead { background: #000; border-color: rgba(247,244,238,.16); }
+.feature-card-lead .feature-cta::after { background: var(--c-gold); }
+a.feature-card-lead:hover .feature-cta { color: #fff; }
+a.feature-card-lead:hover .feature-cta::after { background: #fff; }
+
+/* ---------- 50.10 Pricing tiers ----------
+   Seventeen filled red discs across three cards left nothing for the
+   CTA to win against. The supporting tiers get a quiet ringed tick;
+   red stays exclusive to the recommended plan and its button, so the
+   eye lands where the decision is. */
+.tier { box-shadow: var(--shadow-xs); }
+.tier-feats li::before {
+  content: '';
+  background: none;
+  border: 1.5px solid var(--c-line);
+  width: 17px; height: 17px;
+  margin-top: .24rem;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path fill='none' stroke='%232A2D34' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' d='M2.6 6.3 4.9 8.6 9.4 3.9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11px 11px;
+}
+.tier-featured .tier-feats li::before {
+  background-color: var(--c-blood);
+  border-color: var(--c-blood);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M2.6 6.3 4.9 8.6 9.4 3.9'/></svg>");
+}
+.tier-feats li.miss::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path fill='none' stroke='%236C707A' stroke-width='1.9' stroke-linecap='round' d='M3.6 6h4.8'/></svg>");
+  border-color: var(--c-line);
+  opacity: .8;
+}
+:root[data-theme="dark"] .tier-feats li::before {
+  border-color: rgba(247,244,238,.22);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path fill='none' stroke='%23E8D8A6' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' d='M2.6 6.3 4.9 8.6 9.4 3.9'/></svg>");
+}
+
+/* ---------- 50.11 Program fact panel ----------
+   These four panels used to be inline 135° gradients — navy-to-black on
+   BJJ, olive-to-brown on Kids — which, sitting under the shared red
+   corner glow, produced colour pairs that belong to no palette. One ink
+   surface now carries all four; the discipline shows up as a single
+   accent rule, the same way the schedule rows already colour-code. */
+.prog-facts {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--c-ink);
+  border: 1px solid var(--c-bone-12);
+  border-radius: var(--radius);
+  padding: 1.7rem 1.8rem;
+  color: var(--c-bone);
+  box-shadow: var(--shadow-md);
+}
+.prog-facts::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--prog-accent, var(--c-gold));
+}
+/* A single wash of the discipline colour, kept low enough that the
+   panel still reads as ink rather than as a coloured card. */
+.prog-facts::after {
+  content: '';
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  top: -190px;
+  right: -150px;
+  background: radial-gradient(circle, var(--prog-glow, rgba(201,162,75,.16)) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+.prog-facts > * { position: relative; }
+.prog-facts h3 { color: #fff; font-size: 1.4rem; margin-bottom: .5rem; }
+
+.prog-facts.prog-bjj    { --prog-accent: #6CABDD; --prog-glow: rgba(108,171,221,.16); }
+.prog-facts.prog-muay   { --prog-accent: var(--c-blood); --prog-glow: rgba(218,41,28,.16); }
+.prog-facts.prog-boxing { --prog-accent: var(--c-bone); --prog-glow: rgba(247,244,238,.1); }
+.prog-facts.prog-kids   { --prog-accent: var(--c-bee); --prog-glow: rgba(255,199,44,.14); }
+
+/* The bone belt sat on a white card behind a 8%-ink hairline, so only
+   its black tape tip was visible and the whole thing read as a stalled
+   progress bar. A real edge makes it an object again. */
+.curr-belt { border-color: rgba(14,15,18,.16); }
+
+/* ---------- 50.12 Next-class banner ----------
+   Flat brand red, so it reads as the same red as the marquee strip
+   below the hero rather than a second, slightly-different one. The
+   left-to-right gradient plus a white radial hotspot was doing the
+   work of a sheen, which is decoration on a live-data strip. */
+.nextclass-banner {
+  background: var(--c-blood);
+  padding: .7rem 0;
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+}
+.nextclass-banner::before { display: none; }
+.nextclass-banner [data-nextclass-in] {
+  background: rgba(0,0,0,.2);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
+  font-weight: 700;
+}
+/* On a phone the five fragments wrapped to three lines and pushed the
+   headline most of the way off the first screen. The "Next class:"
+   label goes — the name is set in Anton caps and already reads as the
+   subject — and the class, its time and the countdown all stay. */
+@media (max-width: 767.98px) {
+  .nextclass-banner { padding: .55rem 0; font-size: .82rem; }
+  .nextclass-banner-inner { gap: .2rem .7rem; }
+  .nextclass-banner-inner > span:first-child { display: none; }
+  .nextclass-banner [data-nextclass-name] { font-size: .95rem; }
+}
+
+/* ---------- 50.13 Hero ----------
+   The today panel was a 72%-ink card on a ~95%-ink hero behind a
+   14%-bone hairline: functionally invisible. It is the hero's one piece
+   of live proof, so it needs to sit *on* the photo, not in it. */
+.hero-today {
+  background: rgba(10,11,13,.86);
+  border-color: rgba(247,244,238,.2);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(247,244,238,.06);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+}
+
+/* The watermark is a background texture, not an element: on narrow
+   screens it landed directly behind the headline and read as a render
+   fault. It earns its place only where there is room beside the copy. */
+.hero-glyph { display: none; }
+@media (min-width: 992px) { .hero-glyph { display: block; } }
+
+/* Trust row: on a phone three inline items wrapped to a third line that
+   fell below the fold. A two-column grid keeps them on screen and
+   aligned instead of ragged. */
+@media (max-width: 575.98px) {
+  .hero { min-height: 0; padding: var(--r-5) 0 var(--r-6); }
+  .hero-trust {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .6rem .9rem;
+    font-size: .8rem;
+  }
+  .hero-lede { margin-bottom: var(--r-4); }
+  .hero-cta-row { margin-bottom: var(--r-4); }
+}
+
+/* ---------- 50.14 Header on small screens ----------
+   Brand + theme toggle + CTA + burger left no gutter at 390px; the
+   four sat edge to edge. Tightening the brand and the CTA buys the row
+   back its breathing room without dropping anything. */
+@media (max-width: 575.98px) {
+  .nav-row { padding: .6rem 0; gap: .4rem; }
+  .nav-cta { font-size: .74rem; padding: .7rem .85rem; letter-spacing: .06em; }
+  .brand { font-size: 1.2rem; gap: .5rem; }
+  .brand-mark { width: 30px; height: 30px; font-size: 1rem; }
+}
+
+/* ---------- 50.15 Coach cards ----------
+   Centred text under a 112px circular avatar is the default "meet the
+   team" block every template ships with, and it wastes the one asset
+   the page actually has: the faces. A flush 4:5 portrait with the name
+   set beneath it reads as an editorial roster instead. */
+.coach-card {
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+.coach-avatar {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  border-radius: 0;
+  margin: 0 0 1.15rem;
+  box-shadow: none;
+  background: var(--c-charcoal);
+}
+/* The frame is an aspect-ratio box with `height: auto`, so a percentage
+   height on the child has no definite containing block to resolve
+   against and the photo would render at its intrinsic ratio and spill.
+   Absolute positioning gives it the padding box to fill. */
+.coach-avatar > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+.coach-avatar > span {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--f-display);
+  font-size: 3rem;
+  color: var(--c-gold);
+  background: var(--c-ink);
+}
+/* The "we're hiring" tile has no photo — it carries the brand red at
+   full portrait size instead, which makes it read as a deliberate
+   sixth slot rather than a card that failed to load. */
+.coach-card .coach-avatar:not(.coach-avatar-photo) { font-size: 3.4rem; }
+.coach-card:hover .coach-avatar { transform: none; }
+.coach-card:hover .coach-avatar-photo img { transform: scale(1.04); }
+.coach-avatar-photo img { transition: transform 600ms cubic-bezier(.2,.7,.2,1); }
+
+.coach-card > .coach-name,
+.coach-card > .coach-role,
+.coach-card > .coach-snippet,
+.coach-card > .coach-readmore { margin-left: 1.4rem; margin-right: 1.4rem; }
+.coach-card > .coach-snippet  { flex-grow: 1; }
+.coach-card > .coach-readmore { margin-bottom: 1.5rem; align-self: flex-start; }
+.coach-role { margin-bottom: .7rem; }
+
+/* ---------- 50.16 Section rhythm ----------
+   Two sections of the *same* tone back to back stack their padding:
+   on the reviews page that put ~190px of undivided cream between the
+   hero's button and the next heading, which reads as a dead zone
+   rather than as breathing room. Where nothing changes colour, one
+   stanza of air is enough — where it does, the full pair stays. */
+.section-bone + .section-bone,
+.section-dark + .section-dark { padding-top: 0; }
+@media (min-width: 768px) {
+  .section-bone + .section-bone,
+  .section-dark + .section-dark { padding-top: 1.5rem; }
+}
+
+/* ---------- 50.17 Contact ----------
+   The ink panel was height:100%, stretched to match the taller form
+   beside it, which left ~180px of empty black under the opening hours.
+   Letting it size to its own content makes the two columns read as a
+   deliberate asymmetric pair instead of one box with a hole in it. */
+@media (min-width: 992px) {
+  .contact-info { height: auto; }
+}
+
+/* ---------- 50.18 Program cards ----------
+   These carry no photography on the homepage (deliberately — the site
+   does not invent gym imagery), so the top half of a 320px card was
+   simply empty. Pinning the label to the top edge gives the card
+   content at both ends and turns the middle into composed negative
+   space rather than a gap. */
+.program-card {
+  min-height: 296px;
+  padding: 3.1rem var(--r-4) var(--r-4);
+}
+.program-card .ptag {
+  position: absolute;
+  top: var(--r-4);
+  left: var(--r-4);
+  margin: 0;
+  background: transparent;
+  border: 1px solid rgba(247,244,238,.38);
+  color: var(--c-bone);
+  transition: border-color var(--t-med), color var(--t-med), background var(--t-med);
+}
+.program-card:hover .ptag {
+  border-color: var(--prog-tint, var(--c-gold));
+  color: var(--prog-tint, var(--c-gold));
+}
+
+/* Four gradients that all resolve to the same ink read as one family;
+   four that each end somewhere different read as four themes. Every
+   discipline is now a low tint of its own colour falling into ink. */
+.program-bjj    { --prog-tint: #6CABDD; background: linear-gradient(160deg, #16233A 0%, var(--c-ink) 72%); }
+.program-muay   { --prog-tint: #E3675A; background: linear-gradient(160deg, #3A1014 0%, var(--c-ink) 72%); }
+.program-boxing { --prog-tint: var(--c-bone); background: linear-gradient(160deg, #24272E 0%, var(--c-ink) 72%); }
+.program-kids   { --prog-tint: var(--c-bee); background: linear-gradient(160deg, #3A2E10 0%, var(--c-ink) 72%); }
+
+/* The numeral now shares the top row with the label, so it tints to the
+   same discipline colour rather than always resolving to gold. */
+.program-card:hover .program-num { -webkit-text-stroke-color: var(--prog-tint, var(--c-gold)); }
+
+/* ---------- 50.19 Gallery tile caption ----------
+   The caption pill was 70%-ink, which read clearly against the old
+   bright placeholder gradients but vanished once the tiles became ink.
+   A hairline keeps it legible on both a dark tile and a photo. */
+.gallery-tile .gtag {
+  background: rgba(14,15,18,.72);
+  box-shadow: inset 0 0 0 1px rgba(247,244,238,.18);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* ---------- 50.20 Dark theme: pricing tiers ----------
+   The two supporting tiers kept a hard #fff surface in dark mode while
+   the global dark rules flipped their headings, prices and fine print
+   to bone — so the plan name, the "/mo" and the struck-through rows
+   were white on white. They now take the same dark surface every other
+   card on the site already had. */
+:root[data-theme="dark"] .tier {
+  background: #16181D;
+  border-color: rgba(247,244,238,.08);
+  color: #F2EFE9;
+}
+:root[data-theme="dark"] .tier:hover { border-color: var(--c-gold); }
+:root[data-theme="dark"] .tier-featured {
+  background: #000;
+  border-color: rgba(247,244,238,.14);
+}
+:root[data-theme="dark"] .tier-name  { color: var(--c-bone); }
+:root[data-theme="dark"] .tier-price { color: var(--c-bone); }
+:root[data-theme="dark"] .tier-featured .tier-price { color: var(--c-gold); }
+:root[data-theme="dark"] .tier-tag,
+:root[data-theme="dark"] .tier-period,
+:root[data-theme="dark"] .tier-fineprint { color: rgba(247,244,238,.6); }
+:root[data-theme="dark"] .tier-feats li { color: rgba(247,244,238,.85); border-bottom-color: rgba(247,244,238,.09); }
+:root[data-theme="dark"] .tier-feats li.miss { color: rgba(247,244,238,.4); }
+
+/* The light-tier secondary button carries an inline ink border colour
+   from the markup, which disappears against a dark card. */
+:root[data-theme="dark"] .tier .btn-ghost-forge {
+  border-color: rgba(247,244,238,.28) !important;
+  color: var(--c-bone) !important;
+}
+:root[data-theme="dark"] .tier .btn-ghost-forge:hover {
+  border-color: var(--c-gold) !important;
+  color: var(--c-gold) !important;
+}
+:root[data-theme="dark"] .tier .btn-dark-forge {
+  background: var(--c-bone);
+  color: var(--c-ink);
+}
+:root[data-theme="dark"] .tier .btn-dark-forge:hover { background: #fff; color: var(--c-ink); }
+
+/* ---------- 50.21 Touch targets ----------
+   Footer links were 20–24px tall on a phone, and the Arabic language
+   toggle was 7px wide. WCAG 2.5.8 asks for 24×24 CSS px minimum; a
+   thumb wants more. The padding is added inside the existing gap so
+   the footer does not get taller. */
+
+/* The language toggles are a single glyph each — they need a hit area
+   at every width, not just on a phone. Declared before the mobile
+   block so that block's larger target still wins. */
+.footer-bottom-legal a[data-lang] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  min-height: 28px;
+}
+
+@media (max-width: 767.98px) {
+  .footer-col ul { gap: .15rem; }
+  .footer-col ul a {
+    display: block;
+    padding: .55rem 0;
+    min-height: 44px;
+    line-height: 1.5;
+  }
+  .footer-bottom-legal { gap: .2rem 1.1rem; }
+  .footer-bottom-legal a,
+  .footer-bottom-legal a[data-lang] {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    min-width: 40px;
+    justify-content: center;
+  }
+  .coach-readmore { padding: .5rem 0; }
+  /* The banner's only action was a 22px-tall inline link. */
+  .nextclass-banner a { padding: .35rem 0; }
+}
+
+/* ---------- 50.22 Hero watermark ----------
+   Anchored from the top, the wordmark's baseline cut a visible
+   horizontal edge straight across the middle of the hero and collided
+   with the timetable panel. Bleeding it off the bottom of the section
+   removes the edge and leaves it doing what a watermark should —
+   adding depth behind the composition, not sitting in it. */
+.hero-glyph {
+  top: auto;
+  bottom: -12%;
+  right: -2vw;
+  color: rgba(247,244,238,.035);
+}
+
+/* ---------- 50.23 Forge Path section ----------
+   The PATH watermark sat high enough to run straight through the
+   closing line, so the type read as if it were on a grey panel. Dropped
+   so it bleeds off the section's bottom edge, it backs the CTA instead
+   of colliding with it — and fills what was otherwise dead cream. */
+.forge-path::before {
+  bottom: 0;
+  opacity: .03;
+}
+
+/* The path and the playbook are both bone, but neither carries
+   `.section-bone`, so their padding stacked into ~220px of empty cream
+   between the CTA buttons and the next eyebrow. */
+.forge-path + .playbook { padding-top: 2rem; }

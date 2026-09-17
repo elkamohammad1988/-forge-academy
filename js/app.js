@@ -662,8 +662,8 @@
             +        '<span class="chip chip-' + esc(slug) + '">' + esc(progLabel(cls.prog)) + '</span>'
             +        '<span>· ' + esc(cls.level) + ' · ' + esc(cls.coach) + '</span>'
             +      '</div>'
-            +      '<div class="srow-meta" style="margin-top:.35rem;">' + capHtml + '</div>'
             +    '</a>'
+            +    '<div class="srow-cap">' + capHtml + '</div>'
             +    '<a class="srow-cta" href="' + esc(bookHref) + '">' + ctaLabel + '</a>'
             +  '</div>';
       });
@@ -1098,7 +1098,10 @@
   /* ---------- 21. Service worker (offline cache) ---------- */
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js').catch(function () { /* offline support optional */ });
+      // Root-absolute: a relative 'sw.js' resolves to /programs/sw.js on the
+      // discipline pages and 404s. The server already sends
+      // Service-Worker-Allowed: / for it.
+      navigator.serviceWorker.register('/sw.js').catch(function () { /* offline support optional */ });
     });
   }
 
